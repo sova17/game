@@ -27,34 +27,40 @@ using System.Threading.Tasks;
 namespace templates {
 	class TBaseMap {
 	}
-	class TBaseMapController {
+	abstract class TBaseMapController {
 		public abstract void CalculateAvailableArea(TBaseMap map);
 	}
-	class TBaseWeatherController {
-		private abstract void GenerateFirstWeather(TBaseMap map);
+	abstract class TBaseWeatherController {
+		//private abstract void GenerateFirstWeather(TBaseMap map);
 		public abstract void GenerateWeather(TBaseMap map);
 	}
-	class TBaseDamageController {
+	abstract class TBaseDamageController {
 		public abstract int CalculateDamage(TBaseShip damager, TBaseShip defenser, TDirection direction);
 	}
-	class TBaseShipController {
+	abstract class TBaseShipController {
 		private Queue<TBaseShip> _ships;
 		public TBaseShip CurrentShip;
 		public TBaseAction Wait;
 		public TBaseAction Defense;
 		public TBaseAction Rotate;
-		public TBaseShipAction Damage;
-		public TBaseCellAction Go;
+		public TBaseAction Damage;
+		public TBaseAction Go;
 		public abstract void AddShip(TBaseShip ship);
 		public abstract void SubShip(TBaseShip ship);
 	}
-	class TBaseAction {
-		public abstract void Execute(TBaseShipController shipController);
+	abstract class TBaseAction {
+		public abstract void Execute(TBaseShipController shipController, Object obj);
 	}
-	class TBaseShipAction {
+	abstract class TBaseShipAction : TBaseAction {
+		public void Execute(TBaseShipController shipController, Object obj) {
+			Execute(shipController, (TBaseShip)obj);
+		}
 		public abstract void Execute(TBaseShipController shipController, TBaseShip ship);
 	}
-	class TBaseCellAction {
+	abstract class TBaseCellAction :TBaseAction {
+		public void Execute(TBaseShipController shipController, Object obj) {
+			Execute(shipController, (TBaseCell)obj);
+		}
 		public abstract void Execute(TBaseShipController shipController, TBaseCell cell);
 	}
 	class TBaseCell {
