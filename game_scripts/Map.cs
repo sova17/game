@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseCell {
-		public int X { get; set; }
-		public int Y { get; set; }
-		public int Depth { get; set; }
-		//public TSpecificators BonusSpecificators { get; set; }
+		public Int32 X { get; set; }
+		public Int32 Y { get; set; }
+		public Int32 Depth { get; set; }
+		public TBattleParameters BonusSpecificators { get; set; }
+		// Here will be yet some parameters, for example about weather in the cell, etc
 	}
 	abstract class TBaseMap {
+		// supposedly Cell[][] will be here
 	}
 }

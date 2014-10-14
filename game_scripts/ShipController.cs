@@ -17,10 +17,10 @@ using System.Threading.Tasks;
 //	}
 //	public class TMap {
 //		public TCell[,] Cells;
-//		public TMap(int width, int height) {
+//		public TMap(Int32 width, Int32 height) {
 //			Cells = new TCell[height, width];
 //		}
-//		public TCell this[int x, int y] { get { return Cells[x, y]; } set { Cells[x, y] = value; } }
+//		public TCell this[Int32 x, Int32 y] { get { return Cells[x, y]; } set { Cells[x, y] = value; } }
 //	}
 //}
 
@@ -28,6 +28,7 @@ namespace game_scripts {
 	abstract class TBaseShipController {
 		private Queue<TBaseShip> _ships;
 		public TBaseShip CurrentShip;
+		// obviously can be grouped in one array/List of actions if it will be needed
 		public TBaseAction Wait;
 		public TBaseAction Defense;
 		public TBaseAction Rotate;

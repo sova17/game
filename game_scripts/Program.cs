@@ -8,55 +8,55 @@ namespace game_scripts {
 	}
 }
 
-		//#region hit points
-		//public int HullLeftHitpoints {
-		//	get { return currentSpecs.HullLeftHitpoints; }
+		//#region hit poInt32s
+		//public Int32 HullLeftHitpoInt32s {
+		//	get { return currentSpecs.HullLeftHitpoInt32s; }
 		//	set {
 		//		TSpecificators oldSpecs = currentSpecs;
-		//		currentSpecs.HullLeftHitpoints = value;
+		//		currentSpecs.HullLeftHitpoInt32s = value;
 		//		UpdateNumberOfGunsLeft(oldSpecs);
 		//		UpdateMoral(oldSpecs);
 		//	}
 		//}
-		//public int HullRightHitpoints {
-		//	get { return currentSpecs.HullRightHitpoints; }
+		//public Int32 HullRightHitpoInt32s {
+		//	get { return currentSpecs.HullRightHitpoInt32s; }
 		//	set {
 		//		TSpecificators oldSpecs = currentSpecs;
-		//		currentSpecs.HullRightHitpoints = value;
+		//		currentSpecs.HullRightHitpoInt32s = value;
 		//		UpdateNumberOfGunsRight(oldSpecs);
 		//		UpdateMoral(oldSpecs);
 		//	}
 		//}
-		//public int HullHeadHitpoints {
-		//	get { return currentSpecs.HullHeadHitpoints; }
+		//public Int32 HullHeadHitpoInt32s {
+		//	get { return currentSpecs.HullHeadHitpoInt32s; }
 		//	set {
 		//		TSpecificators oldSpecs = currentSpecs;
-		//		currentSpecs.HullHeadHitpoints = value;
+		//		currentSpecs.HullHeadHitpoInt32s = value;
 		//		UpdateNumberOfGunsHead(oldSpecs);
 		//		UpdateMoral(oldSpecs);
 
 		//	}
 		//}
-		//public int HullTailHitpoints {
-		//	get { return currentSpecs.HullTailHitpoints; }
+		//public Int32 HullTailHitpoInt32s {
+		//	get { return currentSpecs.HullTailHitpoInt32s; }
 		//	set {
 		//		TSpecificators oldSpecs = currentSpecs;
-		//		currentSpecs.HullTailHitpoints = value;
+		//		currentSpecs.HullTailHitpoInt32s = value;
 		//		UpdateNumberOfGunsTail(oldSpecs);
 		//		UpdateMoral(oldSpecs);
 		//	}
 		//}
-		//public int MastHitpoints {
-		//	get { return currentSpecs.MastHitpoints; }
+		//public Int32 MastHitpoInt32s {
+		//	get { return currentSpecs.MastHitpoInt32s; }
 		//	set {
 		//		TSpecificators oldSpecs = currentSpecs;
-		//		currentSpecs.MastHitpoints = value;
+		//		currentSpecs.MastHitpoInt32s = value;
 		//		UpdateNumberOfGunsAir(oldSpecs);
 		//		UpdateMoral(oldSpecs);
 		//	}
 		//}
 	//}
-		//public int BearingCapacity {
+		//public Int32 BearingCapacity {
 		//	get { return currentSpecs.BearingCapacity; }
 		//	set {
 		//		if (value != this.BearingCapacity) {
@@ -67,7 +67,7 @@ namespace game_scripts {
 		//		}
 		//	}
 		//}
-		//public int Speed {
+		//public Int32 Speed {
 		//	get { return currentSpecs.Speed; }
 		//	set {
 		//		if (value != this.Speed) {
@@ -77,7 +77,7 @@ namespace game_scripts {
 		//		}
 		//	}
 		//}
-		//public int Moral {
+		//public Int32 Moral {
 		//	get { return currentSpecs.Moral; }
 		//	set {
 		//		if (value != this.Moral) {

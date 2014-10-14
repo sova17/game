@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-	abstract class Cannon {
-		public int Weight { get; set; }
-		public int MaxCannonballWeight { get; set; }
-		public PartsScheme<int> Sharpshooting { get; set; }
+	abstract class Cannon : IStorable {
+		public abstract String GetName();
+		public abstract TDimensions GetDimensions();
+		public Int32 MaxCannonballWeight { get; set; }
+		public ShipPartsScheme<Int32> Sharpshooting { get; set; }
 	}
 }

@@ -52,6 +52,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipController.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="BattleParameters.cs" />
     <Compile Include="WeatherController.cs" />
   </ItemGroup>
   <ItemGroup>
