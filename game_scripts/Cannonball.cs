@@ -8,7 +8,7 @@ namespace game_scripts {
 	abstract class CannonBall {
 		public int Weight { get; set; }
 		public int AirResistence { get; set; }
-		public TBaseShip.PartsScheme<int> Damage { get; set; }
-		public TBaseShip.PartsScheme<int> Sharpshooting { get; set; }
+		public PartsScheme<int> Damage { get; set; }
+		public PartsScheme<int> Sharpshooting { get; set; }
 	}
 }

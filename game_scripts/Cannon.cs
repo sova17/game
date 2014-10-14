@@ -8,6 +8,6 @@ namespace game_scripts {
 	abstract class Cannon {
 		public int Weight { get; set; }
 		public int MaxCannonballWeight { get; set; }
-		public TBaseShip.PartsScheme<int> Sharpshooting { get; set; }
+		public PartsScheme<int> Sharpshooting { get; set; }
 	}
 }
