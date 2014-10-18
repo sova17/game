@@ -7,61 +7,95 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseStorage {
-		public TCapacity MaxCapacity;
-		public TCapacity CurrentMaxCapacity;
-		public TCapacity AvailableCapacity;
+		public abstract TCapacity MaxCapacity { get; }
+		public abstract TCapacity CurrentMaxCapacity { get; }
+		public abstract TCapacity AvailableCapacity { get; }
+		public abstract Boolean Contains(IStorable obj);
+		/// <summary>
+		/// return 0 when storage doesn't contains <paramref name="obj"/>
+		/// </summary>
+		public abstract Int32 CountOfObjectInStorage(IStorable obj);
 		public abstract Boolean TryAddObject(IStorable obj);
 		public abstract Boolean TrySubObject(IStorable obj);
 		/// <summary>
 		/// when there is no space and e.g. storage get damage
 		/// </summary>
 		public abstract void DestroyRandomObject();
-		public abstract Int32 GetCountOfObjectInStorage(IStorable obj);
 	}
+
 	class TCapacity {
 		public Int32 Weight { get; private set; }
 		public Int32 Space { get; private set; }
+		public TCapacity(Int32 space, Int32 weight) {
+			this.Weight = weight;
+			this.Space = space;
+		}
 		public static Boolean operator >(TCapacity first, TCapacity second) {
-			throw new NotImplementedException();
+			return first.Space > second.Space || (first.Space == second.Space && first.Weight > second.Weight);
 		}
 		public static Boolean operator <(TCapacity first, TCapacity second) {
-			throw new NotImplementedException();
+			return second > first;
 		}
 		public static TCapacity operator -(TCapacity first, TCapacity second) {
-			throw new NotImplementedException();
+			return new TCapacity(first.Space - second.Space, first.Weight - second.Weight);
 		}
 	}
+
 	interface IStorable {
 		String GetName();
 		TCapacity Capacity { get; }
 	}
+
 	class TStorage : TBaseStorage {
+		/// <summary>
+		/// Dictionary is much more faster than List when deleting/adding elements many times
+		/// </summary>
 		Dictionary<IStorable, Int32> _collection;
+		TCapacity _maxCapacity, _currentMaxCapacity, _availableCapacity;
 		public TStorage(TCapacity maxCapacity) {
-			this.MaxCapacity = maxCapacity;
-			this.CurrentMaxCapacity = maxCapacity;
-			this.AvailableCapacity = maxCapacity;
+			this._maxCapacity = maxCapacity;
+			this._currentMaxCapacity = maxCapacity;
+			this._availableCapacity = maxCapacity;
 			_collection = new Dictionary<IStorable, Int32>();
+		}		
+		public override TCapacity MaxCapacity {
+			get { return this._maxCapacity; }
+		}
+		public override TCapacity CurrentMaxCapacity {
+			get { return this._availableCapacity; }
+		}
+		public override TCapacity AvailableCapacity {
+			get { return this._availableCapacity; }
+		}
+
+		public override Boolean Contains(IStorable obj) {
+			return _collection.Keys.Contains(obj);
+		}
+		public override Int32 CountOfObjectInStorage(IStorable obj) {
+			if (!this.Contains(obj)) {
+				return 0;
+			}
+			return _collection[obj];
 		}
 		public override Boolean TryAddObject(IStorable obj) {
 			if (obj.Capacity > this.AvailableCapacity) {
 				return false;
 			}
-			if (_collection.Keys.Contains(obj))
+			if (this.Contains(obj))
 				_collection[obj]++;
 			else
 				_collection.Add(obj, 1);
-			this.AvailableCapacity -= obj.Capacity;
+			this._availableCapacity -= obj.Capacity;
 			return true;
 		}
 		public override Boolean TrySubObject(IStorable obj) {
-			if (!_collection.ContainsKey(obj)) {
+			if (!this.Contains(obj)) {
 				return false;
 			}
 			_collection[obj]--;
 			if (_collection[obj] == 0)
 				_collection.Remove(obj);
-			this.AvailableCapacity -= obj.Capacity;
+			this._availableCapacity -= obj.Capacity;
 			return true;
 		}
 		public override void DestroyRandomObject() {
@@ -70,14 +104,8 @@ namespace game_scripts {
 			for (int i = 0; i < (new Random()).Next(1, count); i++) {
 				enumerator.MoveNext();
 			}
-			this.AvailableCapacity -= enumerator.Current.Key.Capacity;
+			this._availableCapacity -= enumerator.Current.Key.Capacity;
 			_collection.Remove(enumerator.Current.Key);
-		}
-		public override Int32 GetCountOfObjectInStorage(IStorable obj) {
-			if (!_collection.Keys.Contains(obj)) {
-				return 0;
-			}
-			return _collection[obj];
 		}
 	}
 }
