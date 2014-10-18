@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace game_scripts {
 	abstract class CannonBall : IStorable {
 		public abstract String GetName();
-		public abstract TDimensions GetDimensions();
+		public abstract TCapacity Capacity {get; }
 		public Int32 AirResistence { get; set; }
 		public ShipPartsScheme<Int32> Damage { get; set; }
 		public ShipPartsScheme<Int32> Sharpshooting { get; set; }
