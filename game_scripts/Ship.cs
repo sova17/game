@@ -17,7 +17,8 @@ namespace game_scripts {
 		public Int32 Width { get; private set; }
 		public Int32 Length { get; private set; }
 		public TBaseStorage Storage;
-		public DoubleVariableBattleParameters BattleParameters;
+		public TBindedParametersController Base;
+		public TBalancingParametersController Current;
 		// Question about ship's cannons and cannonballs hasn't been solved yet
 	}
 	public enum ShipClass {

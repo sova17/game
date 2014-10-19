@@ -9,6 +9,6 @@ namespace game_scripts {
 		public abstract String GetName();
 		public abstract TCapacity Capacity { get; }
 		public Int32 MaxCannonballWeight { get; set; }
-		public ShipPartsScheme<Int32> Sharpshooting { get; set; }
+		public TShipParts Sharpshooting { get; set; }
 	}
 }

@@ -48,12 +48,13 @@
     <Compile Include="DamageController.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapController.cs" />
+    <Compile Include="ParametersController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipController.cs" />
     <Compile Include="Storage.cs" />
-    <Compile Include="BattleParameters.cs" />
+    <Compile Include="Parameters.cs" />
     <Compile Include="WeatherController.cs" />
   </ItemGroup>
   <ItemGroup>
