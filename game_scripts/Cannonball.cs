@@ -5,11 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-	abstract class CannonBall : IStorable {
-		public abstract String GetName();
-		public abstract TCapacity Capacity {get; }
-		public Int32 AirResistence { get; set; }
-		public TShipParts Damage { get; set; }
-		public TShipParts Sharpshooting { get; set; }
+	class CannonBall : IStorable {
+		protected String _name;
+		public CannonBall(String name, TCapacity capacity, Int32 airResistence, TShipParts damage, TShipParts sharpshooting) {
+			this._name = name;
+			this.Capacity = capacity;
+			this.AirResistence = airResistence;
+			this.Damage = damage;
+			this.Sharpshooting = sharpshooting;
+		}
+		public String Name { get { return _name; } }
+		public TCapacity Capacity { get; protected set; }
+		public Int32 AirResistence { get; protected set; }
+		public TShipParts Damage { get; protected set; }
+		public TShipParts Sharpshooting { get; protected set; }
 	}
 }

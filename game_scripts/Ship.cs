@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseShip {
-		public String Name { get; set; }
-		public String ClassName { get; set; }
-		public Int32 CreationYear { get; set; }
-		public TNation CreationNation { get; set; }
+		public String Name { get; protected set; }
+		public String ClassName { get; protected set; }
+		public Int32 CreationYear { get; protected set; }
+		public TNation CreationNation { get; protected set; }
 		public TNation PlayingNation { get; set; }
 		public Int32 Level { get; set; }
 		public Int32 Experience { get; set; }
 		public Int32 RequiredCommandLevel { get; set; }
-		public Int32 Width { get; private set; }
-		public Int32 Length { get; private set; }
-		public TBaseStorage Storage;
-		public TBindedParametersController Base;
-		public TBalancingParametersController Current;
-		// Question about ship's cannons and cannonballs hasn't been solved yet
+		public Int32 Width { get; protected set; }
+		public Int32 Length { get; protected set; }
+		public TBaseStorage Storage { get; protected set; }
+		public TBindedParametersController Base { get; protected set; }
+		public TBalancingParametersController Current { get; protected set; }
+		// Question about ship's cannonballs hasn't been solved yet
+		public TCannon Cannons { get; set; }
 	}
 	public enum ShipClass {
 		BattleShip = 1,

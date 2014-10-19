@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace game_scripts {
 		/// when there is no space and e.g. storage get damage
 		/// </summary>
 		public abstract void DestroyRandomObject();
+		public abstract List<dynamic> GetObjects(Type type);
 	}
 
 	class TCapacity {
@@ -42,7 +44,7 @@ namespace game_scripts {
 	}
 
 	interface IStorable {
-		String GetName();
+		String Name { get; }
 		TCapacity Capacity { get; }
 	}
 
@@ -106,6 +108,15 @@ namespace game_scripts {
 			}
 			this._availableCapacity -= enumerator.Current.Key.Capacity;
 			_collection.Remove(enumerator.Current.Key);
+		}
+		public override List<dynamic> GetObjects(Type type) {
+			Type list = typeof(List<>);
+			var typeList = list.MakeGenericType(type);
+			List<dynamic> resultCollection = (List <dynamic>)Activator.CreateInstance(typeList);
+			foreach (var item in _collection)
+				if (item.Key.GetType().Equals(type))
+					resultCollection.Add(item);
+			return resultCollection;
 		}
 	}
 }

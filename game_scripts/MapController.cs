@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseMapController {
-		public abstract void CalculateAvailableArea(TBaseMap map);
+		public abstract void CalculateAvailableArea(TMap map);
 	}
 }

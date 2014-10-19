@@ -43,6 +43,7 @@ namespace game_scripts {
 		}
 		protected virtual void SetParameters(TParameters parameters) {
 			throw new NotImplementedException();
+		//////////////////////////////////////// TO DO //////////////////////////////////
 		}
 
 		public virtual void AddObservation(Int32 addition) {
@@ -85,6 +86,7 @@ namespace game_scripts {
 	class TBalancingParametersController : TParametersController {
 		public void UpdateParameters(TParameters oldParameters) {
 			throw new NotImplementedException();
+			///////////////////////////////// TO DO ////////////////////////////////////
 		}
 		public override void AddArmour(TShipParts addition) {
 			TParameters oldParameters = _parameters;
