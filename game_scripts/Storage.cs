@@ -22,7 +22,8 @@ namespace game_scripts {
 		/// when there is no space and e.g. storage get damage
 		/// </summary>
 		public abstract void DestroyRandomObject();
-		public abstract List<dynamic> GetObjects(Type type);
+		public abstract List<dynamic> GetObjectsByType(Type type);
+		public abstract IEnumerable<IStorable> GetObjects();
 	}
 
 	class TCapacity {
@@ -109,7 +110,7 @@ namespace game_scripts {
 			this._availableCapacity -= enumerator.Current.Key.Capacity;
 			_collection.Remove(enumerator.Current.Key);
 		}
-		public override List<dynamic> GetObjects(Type type) {
+		public override List<dynamic> GetObjectsByType(Type type) {
 			Type list = typeof(List<>);
 			var typeList = list.MakeGenericType(type);
 			List<dynamic> resultCollection = (List <dynamic>)Activator.CreateInstance(typeList);
@@ -117,6 +118,10 @@ namespace game_scripts {
 				if (item.Key.GetType().Equals(type))
 					resultCollection.Add(item);
 			return resultCollection;
+		}
+		public override IEnumerable<IStorable> GetObjects() {
+			foreach (var item in _collection)
+				yield return item.Key;
 		}
 	}
 }

@@ -27,7 +27,23 @@ namespace game_scripts {
 		public Int32 Deck { get; set; }
 		public Int32 Mast { get; set; }
 		public static TShipParts operator +(TShipParts first, TShipParts second) {
-			throw new NotImplementedException();
+			TShipParts result = new TShipParts();
+			result.Deck = first.Deck + second.Deck;
+			result.HullHead = first.Deck + second.Deck;
+			result.HullLeft = first.HullLeft + second.HullLeft;
+			result.HullRight = first.HullRight + second.HullRight;
+			result.HullTail = first.HullTail + second.HullTail;
+			result.Mast = first.Mast + second.Mast;
+			return result;
+		}
+		public static TShipParts operator -(TShipParts first, TShipParts second) {
+			second.Deck *= -1;
+			second.HullHead *= -1;
+			second.HullLeft *= -1;
+			second.HullRight *= -1;
+			second.HullTail *= -1;
+			second.Mast *= -1;
+			return first + second;
 		}
 	}
 }

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-	class CannonBall : IStorable {
+	class TCannonBall : IStorable {
 		protected String _name;
-		public CannonBall(String name, TCapacity capacity, Int32 airResistence, TShipParts damage, TShipParts sharpshooting) {
+		public TCannonBall(String name, TCapacity capacity, Int32 airResistence, TShipParts damage, TShipParts sharpshooting) {
 			this._name = name;
 			this.Capacity = capacity;
 			this.AirResistence = airResistence;

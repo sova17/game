@@ -5,24 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-	abstract class TBaseCell {
+	class TCell {
 		public Int32 X { get; set; }
 		public Int32 Y { get; set; }
 		public Int32 Depth { get; set; }
-		public TParameters BonusSpecificators { get; set; }
+		public TParameters Bonus { get; set; }
 		public TWeather Weather { get; set; }
-		// Here will be yet some parameters, for example about weather in the cell, etc
 	}
 	abstract class TMap {
-		TBaseCell[,] Cells;
+		TCell[,] Cells;
 		public TMap(int width, int height) {
 			this.Width = width;
 			this.Height = height;
-			this.Cells = new TBaseCell[width, height];
+			this.Cells = new TCell[width, height];
 		}
 		public int Width { get; protected set; }
 		public int Height { get; protected set; }
-		public TBaseCell this[int x, int y] {
+		public TCell this[int x, int y] {
 			get {
 				if (x >= 0 && x < Width && y >= 0 && y < Height)
 					return Cells[x, y];

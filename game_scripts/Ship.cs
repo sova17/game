@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-	abstract class TBaseShip {
+	class TShip : IComparable<TShip> {
 		public String Name { get; protected set; }
 		public String ClassName { get; protected set; }
 		public Int32 CreationYear { get; protected set; }
@@ -19,8 +19,31 @@ namespace game_scripts {
 		public TBaseStorage Storage { get; protected set; }
 		public TBindedParametersController Base { get; protected set; }
 		public TBalancingParametersController Current { get; protected set; }
-		// Question about ship's cannonballs hasn't been solved yet
-		public TCannon Cannons { get; set; }
+		public TCannon CannonKind { get; set; }
+		public TCannonBall CannonBallKind { get; set; }
+		public IEnumerable<TCannonBall> CannonBalls() {
+			throw new NotImplementedException();
+			///////////// TO DO /////////////
+		}
+		public IEnumerable<TCannon> Cannons() {
+			throw new NotImplementedException();
+			///////////// TO DO /////////////
+		}
+		public Int32 CompareTo(TShip second) {
+			if (this.Current.Parameters.Initiative > second.Current.Parameters.Initiative)
+				return 1;
+			if (this.Current.Parameters.Initiative < second.Current.Parameters.Initiative)
+				return -1;
+			return 0;
+		}
+		public override Int32 GetHashCode() {
+			return base.GetHashCode();
+			///////////// TO DO /////////////
+		}
+		public override bool Equals(object obj) {
+			return base.Equals(obj);
+			///////////// TO DO /////////////
+		}
 	}
 	public enum ShipClass {
 		BattleShip = 1,

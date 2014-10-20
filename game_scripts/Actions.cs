@@ -5,19 +5,38 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-abstract class TBaseAction {
-		public abstract void Execute(TBaseShipController shipController, Object obj);
+	abstract class TAction {
+		public abstract void Execute(TBaseShipController shipController, params Object[] objects);
 	}
-	abstract class TBaseShipAction : TBaseAction {
-		public override void Execute(TBaseShipController shipController, Object obj) {
-			Execute(shipController, (TBaseShip)obj);
+	abstract class TBaseShipAction : TAction {
+		public override void Execute(TBaseShipController shipController, params Object[] objects) {
+			if (objects.Length != 2)
+				throw new ArgumentException();
+			Execute(shipController, (TShip)objects[0], objects[1]);
 		}
-		public abstract void Execute(TBaseShipController shipController, TBaseShip ship);
+		public abstract void Execute(TBaseShipController shipController, TShip ship, Object obj);
 	}
-	abstract class TBaseCellAction : TBaseAction {
-		public override void Execute(TBaseShipController shipController, Object obj) {
-			Execute(shipController, (TBaseCell)obj);
+	abstract class TBaseCellAction : TAction {
+		public override void Execute(TBaseShipController shipController, Object[] objects) {
+			if (objects.Length != 1)
+				throw new ArgumentException();
+			Execute(shipController, (TCell)objects[0]);
 		}
-		public abstract void Execute(TBaseShipController shipController, TBaseCell cell);
+		public abstract void Execute(TBaseShipController shipController, TCell cell);
+	}
+	class TDamageAction : TBaseShipAction {
+		public override void Execute(TBaseShipController shipController, TShip ship, object obj) {
+			Execute(shipController, ship, (TDirection)obj);
+		}
+		public void Execute(TBaseShipController shipController, TShip ship, TDirection direction) {
+			throw new NotImplementedException();
+			///////////// TO DO /////////////
+		}
+	}
+	class TGoAction : TBaseCellAction {
+		public override void Execute(TBaseShipController shipController, TCell cell) {
+			throw new NotImplementedException();
+			///////////// TO DO /////////////
+		}
 	}
 }

@@ -4,37 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//namespace game_scripts {
-
-//	public class TMapController {
-//		private TMap _map;
-//		public TMapController(TMap map) {
-//			this._map = map;
-//		}
-//		public void CalculateAvailableArea() {
-
-//		}
-//	}
-//	public class TMap {
-//		public TCell[,] Cells;
-//		public TMap(Int32 width, Int32 height) {
-//			Cells = new TCell[height, width];
-//		}
-//		public TCell this[Int32 x, Int32 y] { get { return Cells[x, y]; } set { Cells[x, y] = value; } }
-//	}
-//}
-
 namespace game_scripts {
-	abstract class TBaseShipController {
-		private Queue<TBaseShip> _ships;
-		public TBaseShip CurrentShip;
+	class TBaseShipController {
+		// how will ship be binded with cell ?
+		///////////// TO DO /////////////
+		private SortedSet<TShip> _ships;
+		public TShip CurrentShip { get; private set; }
+		public TBaseShipController(TAction wait, TAction defense, TAction rotate, TAction damage, TAction go) {
+			this._ships = new SortedSet<TShip>();
+			this.Wait = wait;
+			this.Defense = defense;
+			this.Rotate = rotate;
+			this.Damage = damage;
+			this.Go = go;
+		}
 		// obviously can be grouped in one array/List of actions if it will be needed
-		public TBaseAction Wait;
-		public TBaseAction Defense;
-		public TBaseAction Rotate;
-		public TBaseAction Damage;
-		public TBaseAction Go;
-		public abstract void AddShip(TBaseShip ship);
-		public abstract void SubShip(TBaseShip ship);
+		public TAction Wait { get; protected set; }
+		public TAction Defense { get; protected set; }
+		public TAction Rotate { get; protected set; }
+		public TAction Damage { get; protected set; }
+		public TAction Go { get; protected set; }
+		public void AddShip(TShip ship) {
+			_ships.Add(ship);
+		}
+		public void SubShip(TShip ship) {
+			_ships.Remove(ship);
+		}
 	}
 }
