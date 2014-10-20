@@ -5,32 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace game_scripts {
-		//abstract class TBaseParametersController {
-	//	protected TParameters _parameters;
-	//	public virtual TParameters Parameters { 
-	//		get { 
-	//			return _parameters; 
-	//		}
-	//		set {
-	//			SetParameters(value);
-	//		}
-	//	}
-	//	protected virtual void SetParameters(TParameters parameters) {
-	//		throw new NotImplementedException();
-	//	}
-	//	public abstract void AddObservation(Int32 addition);
-	//	public abstract void AddSubtlety(Int32 addition);
-	//	public abstract void AddArmour(TShipParts addition);
-	//	public abstract void AddHitPoints(TShipParts addition);
-	//	public abstract void AddNumberOfGuns(TShipParts addition);
-	//	public abstract void AddSharpshooting(Int32 addition);
-	//	public abstract void AddSpeed(Int32 addition);
-	//	public abstract void AddDraft(Int32 addition);
-	//	public abstract void AddWeight(Int32 addition);
-	//	public abstract void AddLuck(Int32 addition);
-	//	public abstract void AddMoral(Int32 addition);
-	//	public abstract void AddInitiative(Int32 addition);
-	//}
 	class TParametersController {
 		protected TParameters _parameters;
 		public TParameters Parameters {

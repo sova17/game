@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseStorage {
+		///////////// TO DO /////////////
+		// CurrentMaxCapacity updating from damage and etc
 		public abstract TCapacity MaxCapacity { get; }
 		public abstract TCapacity CurrentMaxCapacity { get; }
 		public abstract TCapacity AvailableCapacity { get; }

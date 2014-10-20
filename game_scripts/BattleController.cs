@@ -9,6 +9,6 @@ namespace game_scripts {
 	/// for initializing TShipController and abstraction between inside and outside representation
 	/// </summary>
 	class TBattleController {
-
+		/////////// TODO //////////////
 	}
 }

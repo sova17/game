@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace game_scripts {
 	abstract class TBaseDamageController {
 		public abstract Int32 CalculateDamage(TShip damager, TShip defenser, TDirection direction);
+		/////////// TODO //////////////
 	}
 	enum TDirection {
 		Left,
