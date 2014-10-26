@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseStorage {
-		///////////// TO DO /////////////
-		// CurrentMaxCapacity updating from damage and etc
+
 		public abstract TCapacity MaxCapacity { get; }
 		public abstract TCapacity CurrentMaxCapacity { get; }
 		public abstract TCapacity AvailableCapacity { get; }
@@ -20,6 +19,7 @@ namespace game_scripts {
 		public abstract Int32 CountOfObjectInStorage(IStorable obj);
 		public abstract Boolean TryAddObject(IStorable obj);
 		public abstract Boolean TrySubObject(IStorable obj);
+		public abstract void OnDamage(TShipParts oldHitPoints, TShipParts newHitPoints);
 		/// <summary>
 		/// when there is no space and e.g. storage get damage
 		/// </summary>
@@ -124,6 +124,15 @@ namespace game_scripts {
 		public override IEnumerable<IStorable> GetObjects() {
 			foreach (var item in _collection)
 				yield return item.Key;
+		}
+		public override void OnDamage(TShipParts oldHitPoints, TShipParts newHitPoints) {
+			if(newHitPoints == oldHitPoints)
+				return;
+				TCapacity addition = newHitPoints / oldHitPoints * CurrentMaxCapacity;
+				if (MaxCapacity < CurrentMaxCapacity)
+					CurrentMaxCapacity = MaxCapacity;
+				}
+
 		}
 	}
 }

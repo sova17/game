@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace game_scripts {
 	class TBaseShipController {
-		// how will ship be binded with cell ?
-		///////////// TO DO /////////////
-		private SortedSet<TShip> _ships;
-		public TShip CurrentShip { get; private set; }
+		private SortedSet<Tuple<TShip, TCell>> _ships;
+		private SortedSet<Tuple<TShip, TCell>> _nextStepShips;
+		private bool IsRoundPlay;
+		public TShip CurrentShip { get; protected set; }
+		public TMap Map { get; protected set; }
+		public TMapController MapController { get; protected set; }
 		public TBaseShipController(TAction wait, TAction defense, TAction rotate, TAction damage, TAction go) {
-			this._ships = new SortedSet<TShip>();
+			this._ships = new SortedSet<Tuple<TShip, TCell>>();
 			this.Wait = wait;
 			this.Defense = defense;
 			this.Rotate = rotate;
@@ -24,11 +26,15 @@ namespace game_scripts {
 		public TAction Rotate { get; protected set; }
 		public TAction Damage { get; protected set; }
 		public TAction Go { get; protected set; }
-		public void AddShip(TShip ship) {
-			_ships.Add(ship);
+		public void AddShip(TShip ship, TCell cell) {
+			_ships.Add(new Tuple<TShip,TCell>(ship, cell));
+			//TODO
+			// добавить занятость точки
 		}
 		public void SubShip(TShip ship) {
-			_ships.Remove(ship);
+			throw new NotImplementedException();
+			//_ships.Remove(new Tuple<TShip, TCell>(ship, cell));
+			//TODO
 		}
 	}
 }

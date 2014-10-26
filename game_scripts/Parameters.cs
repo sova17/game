@@ -18,6 +18,22 @@ namespace game_scripts {
 		public Int32 Luck { get; set; }
 		public Int32 Moral { get; set; }
 		public Int32 Initiative { get; set; }
+		public static TParameters operator -(TParameters first, TParameters second) {
+			TParameters result = new TParameters();
+			result.Observation = first.Observation - second.Observation;
+			result.Subtlety = first.Subtlety - second.Subtlety;
+			result.Armour = first.Armour - second.Armour;
+			result.HitPoints = first.HitPoints - second.HitPoints;
+			result.NumberOfGuns = first.NumberOfGuns - second.NumberOfGuns;
+			result.Sharpshooting = first.Sharpshooting - second.Sharpshooting;
+			result.Speed = first.Speed - second.Speed;
+			result.Draft = first.Draft - second.Draft;
+			result.Weight = first.Weight - second.Weight;
+			result.Luck = first.Luck - second.Luck;
+			result.Moral = first.Moral - second.Moral;
+			result.Initiative = first.Initiative - second.Initiative;
+			return result;
+		}
 	}
 	struct TShipParts {
 		public Int32 HullLeft { get; set; }
@@ -44,6 +60,12 @@ namespace game_scripts {
 			second.HullTail *= -1;
 			second.Mast *= -1;
 			return first + second;
+		}
+		public static double operator /(TShipParts first, TShipParts second) {
+			return Sum(first) / Sum(second);
+		}
+		private static Int32 Sum(TShipParts first) {
+			return first.Deck + first.HullHead + first.HullLeft + first.HullRight + first.HullTail + first.Mast;
 		}
 	}
 }

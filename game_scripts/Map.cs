@@ -11,17 +11,19 @@ namespace game_scripts {
 		public Int32 Depth { get; set; }
 		public TParameters Bonus { get; set; }
 		public TWeather Weather { get; set; }
+		public TParameters OnCurrentRouteBonus { get; set; }
+		public Boolean IsAvailableRouteCell { get; set; }
 	}
-	abstract class TMap {
-		TCell[,] Cells;
-		public TMap(int width, int height) {
+	class TMap {
+		private TCell[,] Cells;
+		public TMap(Int32 width, Int32 height) {
 			this.Width = width;
 			this.Height = height;
 			this.Cells = new TCell[width, height];
 		}
-		public int Width { get; protected set; }
-		public int Height { get; protected set; }
-		public TCell this[int x, int y] {
+		public Int32 Width { get; protected set; }
+		public Int32 Height { get; protected set; }
+		public TCell this[Int32 x, Int32 y] {
 			get {
 				if (x >= 0 && x < Width && y >= 0 && y < Height)
 					return Cells[x, y];

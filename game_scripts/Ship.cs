@@ -22,12 +22,10 @@ namespace game_scripts {
 		public TCannon CannonKind { get; set; }
 		public TCannonBall CannonBallKind { get; set; }
 		public IEnumerable<TCannonBall> CannonBalls() {
-			throw new NotImplementedException();
-			///////////// TO DO /////////////
+			return (IEnumerable<TCannonBall>)Storage.GetObjectsByType(typeof(TCannonBall));
 		}
 		public IEnumerable<TCannon> Cannons() {
-			throw new NotImplementedException();
-			///////////// TO DO /////////////
+			return (IEnumerable<TCannon>)Storage.GetObjectsByType(typeof(TCannon));
 		}
 		public Int32 CompareTo(TShip second) {
 			if (this.Current.Parameters.Initiative > second.Current.Parameters.Initiative)
@@ -37,12 +35,21 @@ namespace game_scripts {
 			return 0;
 		}
 		public override Int32 GetHashCode() {
-			return base.GetHashCode();
-			///////////// TO DO /////////////
+			return this.ClassName.GetHashCode() 
+				^ this.Name.GetHashCode() 
+				^ Enum.GetName(typeof(TNation), this.CreationNation).GetHashCode() 
+				^ this.CreationYear;
 		}
 		public override bool Equals(object obj) {
-			return base.Equals(obj);
-			///////////// TO DO /////////////
+			if (obj is TShip)
+				Equals((TShip)obj);
+			throw new NotImplementedException();
+		}
+		public bool Equals(TShip ship) {
+			return this.Name == ship.Name &&
+				this.ClassName == ship.ClassName &&
+				this.CreationYear == ship.CreationYear &&
+				this.CreationNation == ship.CreationNation;
 		}
 	}
 	public enum ShipClass {
