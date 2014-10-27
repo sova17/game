@@ -48,7 +48,7 @@ namespace game_scripts {
 				throw new ArgumentOutOfRangeException();
 			TShip ship = shipController.CurrentShip;
 			shipController.SubShip(ship);
-			ship.Current.Parameters -= cell.OnCurrentRouteBonus;
+			ship.Current.Parameters -= cell.Bonus;
 			shipController.AddShip(ship, cell);
 		}
 	}

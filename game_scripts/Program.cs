@@ -7,10 +7,7 @@ namespace game_scripts {
 		}
 	}
 	// ParametersController
-	// Map
 	// DamageController
 	// Actions
-
 	// BattleController
-	// MapController
 }

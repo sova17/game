@@ -31,11 +31,11 @@ namespace game_scripts {
 				_ships.Add(new Tuple<TShip, TCell>(ship, cell));
 			else
 				_nextStepShips.Add(new Tuple<TShip, TCell>(ship, cell));
-			Map[cell.X, cell.Y].IsAvailableRouteCell = false;
+			Map[cell.X, cell.Y].IsFree = false;
 		}
 		public void SubShip(TShip ship) {
 			_ships.RemoveWhere(new Predicate<Tuple<TShip, TCell>>(tuple => {
-				Map[tuple.Item2.X, tuple.Item2.Y].IsAvailableRouteCell = true;
+				Map[tuple.Item2.X, tuple.Item2.Y].IsFree = true;
 				return tuple.Item1.Equals(ship);
 			}));
 		}

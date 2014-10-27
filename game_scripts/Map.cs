@@ -11,8 +11,8 @@ namespace game_scripts {
 		public Int32 Depth { get; set; }
 		public TParameters Bonus { get; set; }
 		public TWeather Weather { get; set; }
-		public TParameters OnCurrentRouteBonus { get; set; }
 		public Boolean IsAvailableRouteCell { get; set; }
+		public Boolean IsFree { get; set; }
 	}
 	class TMap {
 		private TCell[,] Cells;
@@ -41,8 +41,20 @@ namespace game_scripts {
 			return GetNeighbours(current.X, current.Y);
 		}
 		public IEnumerable<TCell> GetNeighbours(Int32 x, Int32 y) {
-		// TODO
-			throw new NotImplementedException();
+			if (x - 1 >= 0) {
+				yield return this[x - 1, y];
+				if (y + 1 < this.Height)
+					yield return this[x - 1, y + 1];
+			}
+			if (x + 1 < this.Width) {
+				yield return this[x + 1, y];
+				if (y + 1 < this.Height)
+					yield return this[x + 1, y + 1];
+			}
+			if (y - 1 >= 0)
+				yield return this[x, y - 1];
+			if (y + 1 < this.Height)
+				yield return this[x, y + 1];
 		}
 	}
 }
