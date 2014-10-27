@@ -44,6 +44,18 @@ namespace game_scripts {
 		public static TCapacity operator -(TCapacity first, TCapacity second) {
 			return new TCapacity(first.Space - second.Space, first.Weight - second.Weight);
 		}
+		public static TCapacity operator *(Double mult, TCapacity capacity) {
+			return new TCapacity((Int32)(capacity.Space * mult), (Int32)(capacity.Weight * mult));
+		}
+		public static TCapacity operator +(TCapacity first, TCapacity second) {
+			return new TCapacity(first.Space + second.Space, first.Weight + second.Weight);
+		}
+		public static Boolean operator <(TCapacity first, Int32 num) {
+			return first.Weight < num && first.Space < num;
+		}
+		public static Boolean operator >(TCapacity first, Int32 num) {
+			return first.Weight > num && first.Space > num;
+		}
 	}
 
 	interface IStorable {
@@ -128,11 +140,16 @@ namespace game_scripts {
 		public override void OnDamage(TShipParts oldHitPoints, TShipParts newHitPoints) {
 			if(newHitPoints == oldHitPoints)
 				return;
-				TCapacity addition = newHitPoints / oldHitPoints * CurrentMaxCapacity;
-				if (MaxCapacity < CurrentMaxCapacity)
-					CurrentMaxCapacity = MaxCapacity;
+			TCapacity newCurrentMaxCapacity = newHitPoints / oldHitPoints * CurrentMaxCapacity;
+			if (MaxCapacity < newCurrentMaxCapacity){
+					_currentMaxCapacity = MaxCapacity;
+			}
+			else {
+				while (AvailableCapacity + CurrentMaxCapacity - newCurrentMaxCapacity < 0) {
+					DestroyRandomObject();
 				}
-
+				_currentMaxCapacity = newCurrentMaxCapacity;
+			}
 		}
 	}
 }

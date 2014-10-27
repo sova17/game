@@ -6,4 +6,11 @@ namespace game_scripts {
 		static void Main(string[] args) {
 		}
 	}
+	// ParametersController
+	// Map
+	// DamageController
+	// Actions
+
+	// BattleController
+	// MapController
 }

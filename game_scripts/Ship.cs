@@ -16,7 +16,7 @@ namespace game_scripts {
 		public Int32 RequiredCommandLevel { get; set; }
 		public Int32 Width { get; protected set; }
 		public Int32 Length { get; protected set; }
-		public TBaseStorage Storage { get; protected set; }
+		public TStorage Storage { get; protected set; }
 		public TBindedParametersController Base { get; protected set; }
 		public TBalancingParametersController Current { get; protected set; }
 		public TCannon CannonKind { get; set; }
@@ -43,13 +43,19 @@ namespace game_scripts {
 		public override bool Equals(object obj) {
 			if (obj is TShip)
 				Equals((TShip)obj);
-			throw new NotImplementedException();
+			return false;
 		}
 		public bool Equals(TShip ship) {
 			return this.Name == ship.Name &&
 				this.ClassName == ship.ClassName &&
 				this.CreationYear == ship.CreationYear &&
 				this.CreationNation == ship.CreationNation;
+		}
+		public static bool operator ==(TShip first, TShip second) {
+			return first.Equals(second);
+		}
+		public static bool operator !=(TShip first, TShip second) {
+			return !(first == second);
 		}
 	}
 	public enum ShipClass {

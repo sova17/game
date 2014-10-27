@@ -28,12 +28,18 @@ namespace game_scripts {
 	}
 
 	class TDamageAction : TBaseShipAction {
+		private TBaseDamageController _damageController;
+		public TDamageAction(TBaseDamageController damageController) {
+			this._damageController = damageController;
+		}
 		public override void Execute(TBaseShipController shipController, TShip ship, object obj) {
 			Execute(shipController, ship, (TDirection)obj);
 		}
 		public void Execute(TBaseShipController shipController, TShip ship, TDirection direction) {
-			throw new NotImplementedException();
-			///////////// TO DO /////////////
+			TParameters damage = _damageController.CalculateDamage(shipController.CurrentShip, ship, direction);
+			TShipParts oldHitPoints = ship.Current.Parameters.HitPoints;
+			ship.Current.Parameters -= damage;
+			ship.Storage.OnDamage(oldHitPoints, ship.Current.Parameters.HitPoints);
 		}
 	}
 	class TGoAction : TBaseCellAction {
@@ -44,6 +50,18 @@ namespace game_scripts {
 			shipController.SubShip(ship);
 			ship.Current.Parameters -= cell.OnCurrentRouteBonus;
 			shipController.AddShip(ship, cell);
+		}
+	}
+	class TWaitAction : TAction {
+		public override void Execute(TBaseShipController shipController, params object[] objects) {
+			// TODO
+			throw new NotImplementedException();
+		}
+	}
+	class TDefenseAction : TAction {
+		public override void Execute(TBaseShipController shipController, params object[] objects) {
+			// TODO
+			throw new NotImplementedException();
 		}
 	}
 }

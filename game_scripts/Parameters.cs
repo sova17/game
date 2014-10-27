@@ -61,11 +61,38 @@ namespace game_scripts {
 			second.Mast *= -1;
 			return first + second;
 		}
-		public static double operator /(TShipParts first, TShipParts second) {
+		public static Boolean operator ==(TShipParts first, TShipParts second) {
+			return first.Equals(second);	
+		}
+		public static Boolean operator !=(TShipParts first, TShipParts second) {
+			return !(first == second);
+		}
+		public static Double operator /(TShipParts first, TShipParts second) {
 			return Sum(first) / Sum(second);
 		}
 		private static Int32 Sum(TShipParts first) {
 			return first.Deck + first.HullHead + first.HullLeft + first.HullRight + first.HullTail + first.Mast;
+		}
+		public override bool Equals(object obj) {
+			if(obj is TShipParts)
+				return Equals((TShipParts)obj);
+			return false;
+		}
+		public bool Equals(TShipParts second) {
+			return Deck == second.Deck &&
+				HullHead == second.HullHead &&
+				HullLeft == second.HullLeft &&
+				HullRight == second.HullRight &&
+				HullTail == second.HullTail &&
+				Mast == second.Mast;
+		}
+		public override int GetHashCode() {
+			return this.HullHead ^
+				this.HullLeft ^
+				this.HullRight ^
+				this.HullTail ^
+				this.Mast ^
+				this.Deck;
 		}
 	}
 }

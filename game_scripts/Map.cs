@@ -37,5 +37,12 @@ namespace game_scripts {
 					throw new IndexOutOfRangeException();
 			}
 		}
+		public IEnumerable<TCell> GetNeighbours(TCell current) {
+			return GetNeighbours(current.X, current.Y);
+		}
+		public IEnumerable<TCell> GetNeighbours(Int32 x, Int32 y) {
+		// TODO
+			throw new NotImplementedException();
+		}
 	}
 }

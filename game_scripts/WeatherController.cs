@@ -29,20 +29,14 @@ namespace game_scripts {
 			}
 		}
 		private TWeather Average(TMap map, Int32 x, Int32 y) {
+			var enumerator = map.GetNeighbours(x, y).GetEnumerator();
 			TWeather result = new TWeather();
-			return (
-				(x - 1 >= 0 ? map[x - 1, y].Weather : new TWeather()) +
-				(x + 1 < map.Width ? map[x + 1, y].Weather : new TWeather()) +
-				(y - 1 >= 0 ? map[x, y - 1].Weather : new TWeather())+
-				(y + 1 < map.Height ? map[x, y + 1].Weather : new TWeather())
-				) / 4 +
-				(
-				(x - 1 >= 0 && y - 1 >= 0 ? map[x - 1, y -1].Weather : new TWeather()) +
-				(x - 1 >= 0 && y + 1 < map.Height ? map[x - 1, y + 1].Weather : new TWeather()) +
-				(x + 1 < map.Width && y - 1 >= 0 ? map[x + 1, y - 1].Weather : new TWeather()) +
-				(x + 1 < map.Width && y + 1 < map.Height ? map[x + 1, y + 1].Weather : new TWeather())
-				) / 8;
-
+			Int32 count = 0;
+			while (enumerator.MoveNext()) {
+				result += enumerator.Current.Weather;
+				count++;
+			}
+			return result / count;
 		}
 		}
 		class TWeather {
@@ -52,7 +46,7 @@ namespace game_scripts {
 				weather.WindSpeed = first.WindSpeed + second.WindSpeed;
 				return weather;
 			}
-			public static TWeather operator /(TWeather first, int num) {
+			public static TWeather operator / (TWeather first, int num) {
 				TWeather weather = new TWeather();
 				weather.WindSpeed = first.WindSpeed / num;
 				return weather;
