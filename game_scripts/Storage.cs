@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace game_scripts {
 	abstract class TBaseStorage {
@@ -24,7 +23,7 @@ namespace game_scripts {
 		/// when there is no space and e.g. storage get damage
 		/// </summary>
 		public abstract void DestroyRandomObject();
-		public abstract List<dynamic> GetObjectsByType(Type type);
+		public abstract List<T> GetObjectsByType<T>();
 		public abstract IEnumerable<IStorable> GetObjects();
 	}
 
@@ -124,15 +123,22 @@ namespace game_scripts {
 			this._availableCapacity -= enumerator.Current.Key.Capacity;
 			_collection.Remove(enumerator.Current.Key);
 		}
-		public override List<dynamic> GetObjectsByType(Type type) {
-			Type list = typeof(List<>);
-			var typeList = list.MakeGenericType(type);
-			List<dynamic> resultCollection = (List <dynamic>)Activator.CreateInstance(typeList);
+		public override List<T> GetObjectsByType<T>() {
+			List<T> resultCollection = new List<T>();
 			foreach (var item in _collection)
-				if (item.Key.GetType().Equals(type))
-					resultCollection.Add(item);
+				if (item.Key.GetType() is T)
+					resultCollection.Add((T)item.Key);
 			return resultCollection;
 		}
+		//public override List<dynamic> GetObjectsByType(Type type) {
+		//	Type list = typeof(List<>);
+		//	var typeList = list.MakeGenericType(type);
+		//	List<dynamic> resultCollection = (List <dynamic>)Activator.CreateInstance(typeList);
+		//	foreach (var item in _collection)
+		//		if (item.Key.GetType().Equals(type))
+		//			resultCollection.Add(item);
+		//	return resultCollection;
+		//}
 		public override IEnumerable<IStorable> GetObjects() {
 			foreach (var item in _collection)
 				yield return item.Key;

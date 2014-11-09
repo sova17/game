@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace game_scripts {
 	class TShip : IComparable<TShip> {
@@ -22,10 +21,10 @@ namespace game_scripts {
 		public TCannon CannonKind { get; set; }
 		public TCannonBall CannonBallKind { get; set; }
 		public IEnumerable<TCannonBall> CannonBalls() {
-			return (IEnumerable<TCannonBall>)Storage.GetObjectsByType(typeof(TCannonBall));
+			return (IEnumerable<TCannonBall>)Storage.GetObjectsByType<TCannonBall>();
 		}
 		public IEnumerable<TCannon> Cannons() {
-			return (IEnumerable<TCannon>)Storage.GetObjectsByType(typeof(TCannon));
+			return (IEnumerable<TCannon>)Storage.GetObjectsByType<TCannon>();
 		}
 		public Int32 CompareTo(TShip second) {
 			if (this.Current.Parameters.Initiative > second.Current.Parameters.Initiative)
