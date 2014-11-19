@@ -1,18 +1,21 @@
-/*[System.Serializable]
-class DamageAction : BaseShipAction {
+class DamageAction : Action {
 	public BaseDamageController _damageController;
+    Ship defenser;
+    ShipDirection direction;
 
-	public DamageAction(BaseDamageController damageController) {
+	public DamageAction(BaseDamageController damageController, Ship defenser, ShipDirection direction)
+    {
 		this._damageController = damageController;
+        this.defenser = defenser;
+        this.direction = direction;
 	}
-	public override Action Execute(ShipController shipController, Ship ship, object obj) {
-		return Execute(shipController, ship, (ShipDirection)obj);
-	}
-	public Action Execute(ShipController shipController, Ship ship, ShipDirection direction) {
-		Parameters damage = _damageController.CalculateDamage(shipController.CurrentShip, ship, direction);
-		ShipParts oldHitPoints = ship.Current.Parameters.HitPoints;
-		ship.Current.Parameters -= damage;
-		ship.Storage.OnDamage(oldHitPoints, ship.Current.Parameters.HitPoints);
+    
+    public override Action Execute(ShipController shipController)
+    {
+		Parameters damage = _damageController.CalculateDamage(shipController.CurrentShip, defenser, direction);
+		ShipParts oldHitPoints = defenser.Current.Parameters.HitPoints;
+		defenser.Current.Parameters -= damage;
+		defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HitPoints);
         return this;
 	}
-}*/
+}

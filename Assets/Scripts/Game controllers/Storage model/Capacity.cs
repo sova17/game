@@ -2,19 +2,21 @@ using UnityEngine;
 
 [System.Serializable]
 class Capacity: MonoBehaviour {
-	public int _weight;
-	public int _space;
+    [SerializeField]
+	private int weight;
+    [SerializeField]
+	private int space;
 
 	public int Weight
 	{
-		get { return _weight; }
-		private set { _weight = value; }
+		get { return weight; }
+		private set { weight = value; }
 	}
 
 	public int Space 
 	{ 
-		get { return _space; }
-		private set { _space = value; }
+		get { return space; }
+		private set { space = value; }
 	}
 	
 	public Capacity(int space, int weight) {

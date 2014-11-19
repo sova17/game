@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 [System.Serializable]
 class MapController: MonoBehaviour {
-	public Map _map;
+    private static MapController instance;
+    [SerializeField]
+	private Map map;
 	public Material SeaSurface;
 	public Material ShootToMaterial;
 	public Material MoveToMaterial;
@@ -12,20 +14,30 @@ class MapController: MonoBehaviour {
 	// TODO calibrate
 	static double roundTime = 7;
 	static double cellHeight = 5;
-	
+
+    public static MapController Instance(Map map = null)
+    {
+        if (instance == null)
+        {
+            instance = new MapController(map);
+        }
+        return instance;
+    }
+
 	public Map Map
 	{
-		get { return _map; }
+		get { return map; }
 	}
 
 	
-	public MapController(Map map) {
-		_map = map;
+	private MapController(Map map) {
+		this.map = map;
 		residualLength = new double[map.Width, map.Height];
 	}
 	
 	public void Awake()
 	{
+        instance = this;
 		residualLength = new double[Map.Width, Map.Height];
 	}
 

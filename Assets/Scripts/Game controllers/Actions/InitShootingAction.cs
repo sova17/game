@@ -1,10 +1,8 @@
 ﻿class InitShootingAction: Action
 {
-    public override Action Execute(ShipController shipController)//, params object[] objects)
+    public override Action Execute(ShipController shipController)
     {
-        shipController.CleanAvailableArea();
-        shipController.AvailableArea = shipController.MapController.CalculateAvailableShootingArea(shipController.CurrentShip); ///ships[CurrentShip]);
-        //state = State.expectShooting;
-        return new WaitShootingAction();
+        WaitAction.CleanAvailableArea();
+        return new WaitShootingAction(shipController.MapController.CalculateAvailableShootingArea(shipController.CurrentShip));
     }
 }
