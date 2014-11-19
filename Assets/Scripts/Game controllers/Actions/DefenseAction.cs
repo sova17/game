@@ -1,7 +1,7 @@
-[System.Serializable]
+/*[System.Serializable]
 class DefenseAction : Action {
-	public override void Execute(ShipController shipController, params object[] objects) {
+	public override Action Execute(ShipController shipController, params object[] objects) {
 		// TODO
 		throw new System.NotImplementedException();
 	}
-}
+}*/

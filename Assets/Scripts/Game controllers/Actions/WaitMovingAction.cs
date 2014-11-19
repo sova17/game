@@ -1,7 +1,7 @@
 ﻿class WaitMovingAction: Action
 {
-    public override void Execute(ShipController shipController, params object[] objects)
+    public override Action Execute(ShipController shipController)//, params object[] objects)
     {
-        throw new System.NotImplementedException();
+        return this;
     }
 }

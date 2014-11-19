@@ -37,19 +37,20 @@ class ShipController: MonoBehaviour {
 		get { return _damage; }
 		protected set { _damage = value; }
 	}*/
-    public InitMovingAction InitMoving { get; set; }
-    public WaitMovingAction WaitMoving { get; set; }
-    public MoveAction Move { get; set; }
-    public InitShootingAction InitShooting { get; set; }
-    public WaitShootingAction WaitShooting { get; set; }
-    public ShootAction Shoot { get; set; } 
+    //public InitMovingAction InitMoving { get; set; }
+    //public WaitMovingAction WaitMoving { get; set; }
+    //public MoveAction Move { get; set; }
+    //public InitShootingAction InitShooting { get; set; }
+    //public WaitShootingAction WaitShooting { get; set; }
+    //public ShootAction Shoot { get; set; } 
     public Ship CurrentShip
     {
         get { return _currentShip; }
         set 
         {
             _currentShip = value;
-            state = State.initMoving;
+            //state = State.initMoving;
+            currentAction = new InitMovingAction();
         }
     }
 
@@ -69,13 +70,13 @@ class ShipController: MonoBehaviour {
 	{
 		//ships = new SortedList<Ship, Cell>();
 		//nextStepShips = new SortedList<Ship, Cell>();
-        AvailableArea = new List<Cell>();
-        InitMoving = new InitMovingAction();
-        WaitMoving = new WaitMovingAction();
-        Move = new MoveAction();
-        InitShooting = new InitShootingAction();
-        WaitShooting = new WaitShootingAction();
-        Shoot = new ShootAction();
+        //AvailableArea = new List<Cell>();
+        //InitMoving = new InitMovingAction();
+        //WaitMoving = new WaitMovingAction();
+        //Move = new MoveAction();
+        //InitShooting = new InitShootingAction();
+        //WaitShooting = new WaitShootingAction();
+        //Shoot = new ShootAction();
 		IEnumerable<GameObject> shipGOs  = GameObject.FindGameObjectsWithTag(Tags.Ship);
 		foreach(var shipGO in shipGOs)
 		{
@@ -89,7 +90,7 @@ class ShipController: MonoBehaviour {
 			cell.TryingToSelect += OnCellSelecting;
 		}
 		//state = State.initMoving;
-        currentAction = new MoveAction();
+        currentAction = new InitMovingAction();
 	}
 
     private void OnShipSelecting(Ship ship)
@@ -103,8 +104,7 @@ class ShipController: MonoBehaviour {
         if (AvailableArea.Contains(cell))
             if (currentAction is WaitMovingAction)
             {
-                MoveToHex = cell;
-                currentAction = new MoveAction();
+                currentAction = new MoveAction(cell);
             }
             else if (currentAction is WaitShootingAction)
             {
@@ -150,7 +150,7 @@ class ShipController: MonoBehaviour {
         set { state = value; }
     }
 
-	public Cell MoveToHex;
+	//public Cell MoveToHex;
     public List<Cell> AvailableArea;
 
     public void CleanAvailableArea()
@@ -164,7 +164,7 @@ class ShipController: MonoBehaviour {
     public Action currentAction;
 	public void  Update()
 	{
-        currentAction.Execute(this);
+        currentAction = currentAction.Execute(this);
 		/*switch(state)
 		{
 			case State.initMoving:
