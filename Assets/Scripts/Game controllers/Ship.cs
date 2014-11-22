@@ -179,15 +179,15 @@ class Ship : MonoBehaviour, IComparable<Ship>
 
 	public override bool Equals(object obj) {
 		if (obj is Ship)
-			Equals((Ship)obj);
+			return Equals((Ship)obj);
 		return false;
 	}
 
 	public bool Equals(Ship ship) {
 		return this.Name == ship.Name &&
-			ClassName == ship.ClassName &&
-			CreationYear == ship.CreationYear &&
-			CreationNation == ship.CreationNation;
+            this.ClassName == ship.ClassName &&
+            this.CreationYear == ship.CreationYear &&
+            this.CreationNation == ship.CreationNation;
 	}
 
 	public static bool operator ==(Ship first, Ship second) {

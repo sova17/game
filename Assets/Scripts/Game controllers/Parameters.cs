@@ -7,7 +7,7 @@ class Parameters: MonoBehaviour {
 	public int Subtlety;
 	public ShipParts Armour;
 	public ShipParts HitPoints;
-	public ShipParts NumberOfCannons; //Guns???;
+	public ShipParts NumberOfCannons;
 	public int Sharpshooting;
 	public float Speed;
 	public int Draft;

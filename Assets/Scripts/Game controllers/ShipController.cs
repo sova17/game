@@ -4,7 +4,6 @@ using System.Collections.Generic;
 [System.Serializable]
 class ShipController: MonoBehaviour {
     public List<Ship> ships;
-    public List<Ship> nextStepShips;
 	bool IsRoundPlay;
     [SerializeField]
     private Ship currentShip;
@@ -68,8 +67,8 @@ class ShipController: MonoBehaviour {
 	public void AddShip(Ship ship, Cell cell) {
 		if (!IsRoundPlay)
 			ships.Add(ship);
-		else
-			nextStepShips.Add(ship);
+		//else
+			//nextStepShips.Add(ship);
 	    CurrentShip.CurrentCell.IsFree = false;
 	}
 
