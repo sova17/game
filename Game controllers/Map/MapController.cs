@@ -44,7 +44,7 @@ class MapController: MonoBehaviour {
 	public List<Cell> CalculateAvailableMovingArea(Ship ship)
 	{
 		ship.CurrentCell.renderer.material = MoveToMaterial;
-        List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.Observation, (cell) => (cell.IsFree && cell.IsAvailableRouteCell));
+        List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.DefaultStepLength, (cell) => (cell.IsFree && cell.IsAvailableRouteCell));
         area.Add(ship.CurrentCell);
         foreach(var neighbourCell in area)
 		{
@@ -56,7 +56,7 @@ class MapController: MonoBehaviour {
 	public List<Cell> CalculateAvailableShootingArea(Ship ship)
 	{
 		ship.CurrentCell.renderer.material = ShootToMaterial;
-        List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.Observation);
+        List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.DefaultStepLength);
 		foreach(var neighbourCell in area)
 		{
 			neighbourCell.renderer.material = ShootToMaterial;

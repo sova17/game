@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour 
 {
-	// A very simplistic car driving on the x-z plane.
 	float speed = -500.0f;
 	float rotationSpeed = 100.0f;
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-class Ship : MonoBehaviour, IComparable<Ship>
+class Ship : MonoBehaviour//, IComparable<Ship>
 {
     #region private fields
         [SerializeField]
@@ -161,14 +161,14 @@ class Ship : MonoBehaviour, IComparable<Ship>
 		return (IEnumerable<Cannon>)Storage.GetObjectsByType<Cannon>();
 	}
 
-	int IComparable<Ship>.CompareTo(Ship second) {
+	/*int IComparable<Ship>.CompareTo(Ship second) {
 		if (Current.Parameters.Initiative > second.Current.Parameters.Initiative)
 			return 1;
 		if (Current.Parameters.Initiative < second.Current.Parameters.Initiative)
 			return -1;
 		System.Random rnd = new System.Random();
 		return (rnd.NextDouble() > 0.5) ? 1 : -1;
-	}
+	}*/
 
 	public override int GetHashCode() {
 		return this.ClassName.GetHashCode() 
@@ -202,6 +202,7 @@ class Ship : MonoBehaviour, IComparable<Ship>
 
     public void OnMouseDown()
     {
+        Base.Parameters.HitPoints += 5;
         if (TryingToSelect != null)
             TryingToSelect(this);
     }

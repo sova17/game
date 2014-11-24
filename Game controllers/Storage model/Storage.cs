@@ -17,7 +17,7 @@ abstract class BaseStorage: MonoBehaviour {
 	public abstract int CountOfObjectInStorage(IStorable obj);
 	public abstract bool TryAddObject(IStorable obj);
 	public abstract bool TrySubObject(IStorable obj);
-	public abstract void OnDamage(ShipParts oldHitPoints, ShipParts newHitPoints);
+	public abstract void OnDamage(int oldHitPoints, int newHitPoints);
 	/// <summary>
 	/// when there is no space and e.g. storage get damage
 	/// </summary>
@@ -121,7 +121,7 @@ class Storage : BaseStorage {
 			yield return item.Key;
 	}
 
-	public override void OnDamage(ShipParts oldHitPoints, ShipParts newHitPoints) {
+	public override void OnDamage(int oldHitPoints, int newHitPoints) {
 		if(newHitPoints == oldHitPoints)
 			return;
 		Capacity newCurrentMaxCapacity = newHitPoints / oldHitPoints * CurrentMaxCapacity;

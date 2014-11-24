@@ -3,30 +3,31 @@ class BalancingParametersController : ParametersController {
 
 	public BalancingParametersController (Parameters parameters): base(parameters) {}
 
-	public void UpdateParameters(Parameters oldParameters) {
+	private void UpdateParameters(Parameters oldParameters) {
 		throw new System.NotImplementedException();
 		///////////// TO DO /////////////
 	}
-	public override void AddArmour(ShipParts addition) {
+
+	public override void AddArmour(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddArmour(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddDraft(int addition) {
+	/*public override void AddDraft(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddDraft(addition);
 		UpdateParameters(oldParameters);
-	}
-	public override void AddHitPoints(ShipParts addition) {
+	}*/
+	public override void AddHitPoints(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddHitPoints(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddInitiative(int addition) {
+	/*public override void AddInitiative(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddInitiative(addition);
 		UpdateParameters(oldParameters);
-	}
+	}*/
 	public override void AddLuck(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddLuck(addition);
@@ -37,16 +38,22 @@ class BalancingParametersController : ParametersController {
 		base.AddMoral(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddNumberOfGuns(ShipParts addition) {
+	public override void AddNumberOfLarboardCannons(int addition) {
 		Parameters oldParameters = _parameters;
-		base.AddNumberOfGuns(addition);
+		base.AddNumberOfLarboardCannons(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddObservation(int addition) {
+    public override void AddNumberOfSarboardCannons(int addition)
+    {
+        Parameters oldParameters = _parameters;
+        base.AddNumberOfSarboardCannons(addition);
+        UpdateParameters(oldParameters);
+    }
+	/*public override void AddObservation(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddObservation(addition);
 		UpdateParameters(oldParameters);
-	}
+	}*/
 	public override void AddSharpshooting(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddSharpshooting(addition);
@@ -57,7 +64,7 @@ class BalancingParametersController : ParametersController {
 		base.AddSpeed(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddSubtlety(int addition) {
+	/*public override void AddSubtlety(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddSubtlety(addition);
 		UpdateParameters(oldParameters);
@@ -66,5 +73,5 @@ class BalancingParametersController : ParametersController {
 		Parameters oldParameters = _parameters;
 		base.AddWeight(addition);
 		UpdateParameters(oldParameters);
-	}
+	}*/
 }
