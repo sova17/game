@@ -12,7 +12,7 @@ class ShootAction : Action
     Ship defenser;
     ShipDirection direction;
 
-    public ShootAction(BaseDamageController damageController = null, Ship defenser = null)
+    public ShootAction(BaseDamageController damageController, Ship defenser)
     {
         this._damageController = damageController;
         this.defenser = defenser;
@@ -24,9 +24,8 @@ class ShootAction : Action
         int oldHitPoints = defenser.Current.Parameters.HealthPoints;
         defenser.Current.Parameters -= damage;
         defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HealthPoints);*/
-        
-        System.Random rnd = new System.Random();
-        playerController.CurrentShip = playerController.ships[rnd.Next(playerController.ships.Count)].GetComponent<Ship>();
+
+        defenser.Current.AddHitPoints(-5);
         playerController.StepFinished = true;
         return new InitMovingAction();
     }

@@ -4,7 +4,7 @@ class BalancingParametersController : ParametersController {
 	public BalancingParametersController (Parameters parameters): base(parameters) {}
 
 	private void UpdateParameters(Parameters oldParameters) {
-		throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
 		///////////// TO DO /////////////
 	}
 

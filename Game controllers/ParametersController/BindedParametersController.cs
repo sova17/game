@@ -1,7 +1,17 @@
 [System.Serializable]
 class BindedParametersController : ParametersController {
 	public ParametersController _targetController;
+    public UISlider slider;
 
+    public void Awake()
+    { 
+        _targetController.HPChanged +=_targetController_HPChanged;
+    }
+    private void _targetController_HPChanged(ParametersController parametersController)
+    {
+        slider.sliderValue = (float) parametersController._parameters.HitPoints / _parameters.HitPoints;
+        slider.ForceUpdate();
+    }
 	public BindedParametersController(ParametersController paramController) {
 		this._targetController = paramController;
 	}

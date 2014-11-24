@@ -4,7 +4,6 @@ using System.Collections.Generic;
 [System.Serializable]
 class PlayerController: MonoBehaviour {
     public List<Ship> ships;
-	bool IsRoundPlay;
     [SerializeField]
     private Ship currentShip;
 
@@ -61,7 +60,6 @@ class PlayerController: MonoBehaviour {
     {
         if (!(currentAction is MoveAction || currentAction is ShootAction))
         {
-
             CurrentShip = ship;
             stepFinished(this);
         }
@@ -70,6 +68,7 @@ class PlayerController: MonoBehaviour {
     private void OnAttack(Ship ship)
     {
         Debug.Log("DIE " + ship + "!!!");
+        currentAction = new ShootAction(new DamageController(), ship);
     }
 
     private void OnCellSelecting(Cell cell)
@@ -79,14 +78,10 @@ class PlayerController: MonoBehaviour {
             {
                 currentAction = new MoveAction(cell);
             }
-            else if (currentAction is WaitShootingAction)
-            {
-                currentAction = new ShootAction();
-            }
     }
 
 	public void AddShip(Ship ship, Cell cell) {
-		if (!IsRoundPlay)
+		//if (!IsRoundPlay)
 			ships.Add(ship);
 		//else
 			//nextStepShips.Add(ship);
@@ -101,14 +96,6 @@ class PlayerController: MonoBehaviour {
     public Action currentAction;
 	public void  Tick()
 	{
-        //Debug.Log(this + "   " + currentAction.GetType() + "   " + StepFinished) ;
-        //if (!StepFinished)
-            currentAction = currentAction.Execute(this);
-        /*else
-        {
-            StepFinished = false;
-            if (stepFinished != null)
-                stepFinished(this);
-        }*/
+        currentAction = currentAction.Execute(this);
 	}
 }
