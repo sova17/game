@@ -16,6 +16,8 @@ class ParametersController: MonoBehaviour {
 		}
 	}
 
+    public event System.Action<ParametersController> HPChanged;
+
 	public ParametersController(Parameters parameters)
 	{
 		Parameters = parameters;
@@ -54,6 +56,8 @@ class ParametersController: MonoBehaviour {
 	}
 	public virtual void AddHitPoints(int addition) {
 		this._parameters.HitPoints += addition;
+        if (HPChanged != null)
+            HPChanged(this);
 	}
 	public virtual void AddNumberOfLarboardCannons(int addition) {
 		this._parameters.LarboardNumberOfCannons += addition;

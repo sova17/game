@@ -2,7 +2,9 @@
 using System;
 
 [System.Serializable]
-class WeatherController: MonoBehaviour {
+class WeatherController : MonoBehaviour {
+	//UPDATE
+	// change to using rectangles for generating areas of weather
 	public void GenerateWeather(Map map) {
 		for (int i = 0; i < (Math.Min(map.Width, map.Height) + 1) / 2; i++) {
 			if (map.Width - 2 * i == 1) {
