@@ -15,7 +15,7 @@ class PlayerController: MonoBehaviour {
 		set 
 		{
 			currentShip = value;
-			currentAction = new InitMovingAction();
+			//currentAction = new InitMovingAction();
 		}
 	}
 
@@ -61,17 +61,14 @@ class PlayerController: MonoBehaviour {
 		if (!(currentAction is MoveAction || currentAction is ShootAction))
 		{
 			CurrentShip = ship;
-			stepFinished(this);
-		}
-		else if (currentAction is ShootAction)
-		{
-			currentAction = new ShootAction(new DamageController(), ship);
+			//stepFinished(this);
 		}
 	}
 
 	private void OnAttack(Ship ship)
 	{
-		Debug.Log("DIE " + ship + "!!!");
+        if (currentAction is WaitShootingAction && WaitAction.isAvalableAreaContainsCell(ship.CurrentCell))
+            currentAction = new ShootAction(new DamageController(), ship);
 	}
 
 	private void OnCellSelecting(Cell cell)
@@ -84,29 +81,24 @@ class PlayerController: MonoBehaviour {
 	}
 
 	public void AddShip(Ship ship, Cell cell) {
-		//if (!IsRoundPlay)
-			ships.Add(ship);
-		//else
-			//nextStepShips.Add(ship);
-		CurrentShip.CurrentCell.IsFree = false;
+        ships.Add(ship);
+		ship.CurrentCell.IsFree = false;
 	}
 
 	public void SubShip(Ship ship) {
-		CurrentShip.CurrentCell.IsFree = true;
+		ship.CurrentCell.IsFree = true;
 		ships.Remove(ship);
 	}
+
+    public void NextShip()
+    {
+        int index = ships.IndexOf(CurrentShip);
+        CurrentShip = ships[index < ships.Count - 1 ? index + 1 : 0];
+    }
 
 	public Action currentAction;
 	public void  Tick()
 	{
-		//Debug.Log(this + "   " + currentAction.GetType() + "   " + StepFinished) ;
-		//if (!StepFinished)
-			currentAction = currentAction.Execute(this);
-		/*else
-		{
-			StepFinished = false;
-			if (stepFinished != null)
-				stepFinished(this);
-		}*/
+        currentAction = currentAction.Execute(this);
 	}
 }

@@ -1,19 +1,11 @@
 ﻿using UnityEngine;
 
 abstract class BaseDamageController {
-	public abstract Parameters CalculateDamage(Ship damager, Ship defenser, ShipDirection direction);
+	public abstract Parameters CalculateDamage(Ship damager, Ship defenser);
 }
 
 class DamageController : BaseDamageController {
-	public override Parameters CalculateDamage(Ship damager, Ship defenser, ShipDirection direction) {
-		// TODO
-		throw new System.NotImplementedException();
+	public override Parameters CalculateDamage(Ship damager, Ship defenser) {
+        return new Parameters() { HitPoints = 5.0f };
 	}
-}
-enum ShipDirection {
-	Left,
-	Right,
-	Tail,
-	Head,
-	Air
 }

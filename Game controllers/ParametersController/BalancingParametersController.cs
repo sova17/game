@@ -8,7 +8,8 @@ class BalancingParametersController : ParametersController {
 		///////////// TO DO /////////////
 	}
 
-	public override void AddArmour(int addition) {
+    public override void AddArmour(float addition)
+    {
 		Parameters oldParameters = _parameters;
 		base.AddArmour(addition);
 		UpdateParameters(oldParameters);
@@ -18,7 +19,8 @@ class BalancingParametersController : ParametersController {
 		base.AddDraft(addition);
 		UpdateParameters(oldParameters);
 	}*/
-	public override void AddHitPoints(int addition) {
+    public override void AddHitPoints(float addition)
+    {
 		Parameters oldParameters = _parameters;
 		base.AddHitPoints(addition);
 		UpdateParameters(oldParameters);
@@ -28,12 +30,14 @@ class BalancingParametersController : ParametersController {
 		base.AddInitiative(addition);
 		UpdateParameters(oldParameters);
 	}*/
-	public override void AddLuck(int addition) {
+    public override void AddLuck(float addition)
+    {
 		Parameters oldParameters = _parameters;
 		base.AddLuck(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddMoral(int addition) {
+    public override void AddMoral(float addition)
+    {
 		Parameters oldParameters = _parameters;
 		base.AddMoral(addition);
 		UpdateParameters(oldParameters);
@@ -54,7 +58,8 @@ class BalancingParametersController : ParametersController {
 		base.AddObservation(addition);
 		UpdateParameters(oldParameters);
 	}*/
-	public override void AddSharpshooting(int addition) {
+    public override void AddSharpshooting(float addition)
+    {
 		Parameters oldParameters = _parameters;
 		base.AddSharpshooting(addition);
 		UpdateParameters(oldParameters);

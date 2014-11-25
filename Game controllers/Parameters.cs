@@ -5,20 +5,20 @@ using System;
 class Parameters: MonoBehaviour {
 	//public int Observation;
 	//public int Subtlety;
-	public int Armour;
-	public int HitPoints;
+	public float Armour;
+	public float HitPoints;
 	public int LarboardNumberOfCannons;
 	public int SarboardNumberOfCannons;
 	//public ShipParts Armour;
 	//public ShipParts HitPoints;
 	//public ShipParts NumberOfCannons;
-	public int Sharpshooting;
+	public float Sharpshooting;
 	public float Speed;
 	public int DefaultStepLength;
 	//public int Draft;
 	//public int Weight;
-	public int Luck;
-	public int Moral;
+	public float Luck;
+	public float Moral;
 	//public int Initiative;
 
 	public static Parameters operator -(Parameters first, Parameters second) {

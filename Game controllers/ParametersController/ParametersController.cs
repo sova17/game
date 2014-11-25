@@ -51,10 +51,12 @@ class ParametersController: MonoBehaviour {
 	public virtual void AddSubtlety(int addition) {
 		this._parameters.Subtlety += addition;
 	}*/
-	public virtual void AddArmour(int addition) {
+    public virtual void AddArmour(float addition)
+    {
 		this._parameters.Armour += addition;
 	}
-	public virtual void AddHitPoints(int addition) {
+    public virtual void AddHitPoints(float addition)
+    {
 		this._parameters.HitPoints += addition;
         if (HPChanged != null)
             HPChanged(this);
@@ -66,7 +68,8 @@ class ParametersController: MonoBehaviour {
     {
         this._parameters.SarboardNumberOfCannons += addition;
     }
-	public virtual void AddSharpshooting(int addition) {
+    public virtual void AddSharpshooting(float addition)
+    {
 		this._parameters.Sharpshooting += addition;
 	}
 	public virtual void AddSpeed(float addition) {
@@ -78,10 +81,12 @@ class ParametersController: MonoBehaviour {
 	public virtual void AddWeight(int addition) {
 		this._parameters.Weight += addition;
 	}*/
-	public virtual void AddLuck(int addition) {
+    public virtual void AddLuck(float addition)
+    {
 		this._parameters.Luck += addition;
 	}
-	public virtual void AddMoral(int addition) {
+    public virtual void AddMoral(float addition)
+    {
 		this._parameters.Moral += addition;
 	}/*
 	public virtual void AddInitiative(int addition) {

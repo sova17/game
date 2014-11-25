@@ -15,7 +15,7 @@ class BindedParametersController : ParametersController {
 	public BindedParametersController(ParametersController paramController) {
 		this._targetController = paramController;
 	}
-	public override void AddArmour(int addition) {
+	public override void AddArmour(float addition) {
 		base.AddArmour(addition);
 		_targetController.AddArmour(addition);
 	}
@@ -23,7 +23,8 @@ class BindedParametersController : ParametersController {
 		base.AddDraft(addition);
 		_targetController.AddDraft(addition);
 	}*/
-	public override void AddHitPoints(int addition) {
+    public override void AddHitPoints(float addition)
+    {
 		base.AddHitPoints(addition);
 		_targetController.AddHitPoints(addition);
 	}
@@ -31,11 +32,13 @@ class BindedParametersController : ParametersController {
 		base.AddInitiative(addition);
 		_targetController.AddInitiative(addition);
 	}*/
-	public override void AddLuck(int addition) {
+    public override void AddLuck(float addition)
+    {
 		base.AddLuck(addition);
 		_targetController.AddLuck(addition);
 	}
-	public override void AddMoral(int addition) {
+    public override void AddMoral(float addition)
+    {
 		base.AddMoral(addition);
 		_targetController.AddMoral(addition);
 	}
@@ -52,7 +55,8 @@ class BindedParametersController : ParametersController {
 		base.AddObservation(addition);
 		_targetController.AddObservation(addition);
 	}*/
-	public override void AddSharpshooting(int addition) {
+    public override void AddSharpshooting(float addition)
+    {
 		base.AddSharpshooting(addition);
 		_targetController.AddSharpshooting(addition);
 	}

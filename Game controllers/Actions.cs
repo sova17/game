@@ -3,14 +3,23 @@ using System.Collections.Generic;
 
 abstract class Action
 {
-    public abstract Action Execute(PlayerController shipController);//, params object[] objects);
+    public abstract Action Execute(PlayerController playerController);
+}
+
+class FinishStepAction: Action
+{
+    public override Action Execute(PlayerController playerController)
+    {
+        Debug.Log(playerController + "on FinishStepAction");
+        playerController.StepFinished = true;
+        return new InitMovingAction();
+    }
 }
 
 class ShootAction : Action
 {
     BaseDamageController _damageController;
     Ship defenser;
-    ShipDirection direction;
 
     public ShootAction(BaseDamageController damageController, Ship defenser)
     {
@@ -20,16 +29,12 @@ class ShootAction : Action
 
     public override Action Execute(PlayerController playerController)
     {
-        /*Parameters damage = _damageController.CalculateDamage(playerController.CurrentShip, defenser, direction);
-        int oldHitPoints = defenser.Current.Parameters.HealthPoints;
+        Debug.Log(playerController + "on ShootAction");
+        Parameters damage = _damageController.CalculateDamage(playerController.CurrentShip, defenser);
+        float oldHitPoints = defenser.Current.Parameters.HitPoints;
         defenser.Current.Parameters -= damage;
-        defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HealthPoints);*/
-
-        defenser.Current.AddHitPoints(-25);
-        System.Random rnd = new System.Random();
-        playerController.CurrentShip = playerController.ships[rnd.Next(playerController.ships.Count)].GetComponent<Ship>();
-        playerController.StepFinished = true;
-        return new InitMovingAction();
+        //defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HitPoints);
+        return new FinishStepAction();
     }
 }
 
@@ -42,11 +47,13 @@ class MoveAction : Action
         MoveToHex = moveToHex;
     }
 
-    public override Action Execute(PlayerController shipController)//, Cell cell)
+    public override Action Execute(PlayerController playerController)//, Cell cell)
     {
+        Debug.Log(playerController + "on MoveAction");
+
         //if (!cell.IsAvailableRouteCell)
         //	throw new System.ArgumentOutOfRangeException();
-        Ship ship = shipController.CurrentShip;
+        Ship ship = playerController.CurrentShip;
 
         GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.LookAt(ship.transform.position);
         Vector3 moveTo = new Vector3(MoveToHex.transform.position.x, ship.transform.position.y, MoveToHex.transform.position.z);
@@ -72,6 +79,7 @@ class InitMovingAction : Action
 {
     public override Action Execute(PlayerController playerController)
     {
+        Debug.Log(playerController + "on InitMovingAction");
         WaitAction.CleanAvailableArea();
         playerController.StepFinished = false;
         return new WaitMovingAction(playerController.MapController.CalculateAvailableMovingArea(playerController.CurrentShip));
@@ -80,10 +88,11 @@ class InitMovingAction : Action
 
 class InitShootingAction : Action
 {
-    public override Action Execute(PlayerController shipController)
+    public override Action Execute(PlayerController playerController)
     {
+        Debug.Log(playerController + "on InitShootingAction");
         WaitAction.CleanAvailableArea();
-        return new WaitShootingAction(shipController.MapController.CalculateAvailableShootingArea(shipController.CurrentShip));
+        return new WaitShootingAction(playerController.MapController.CalculateAvailableShootingArea(playerController.CurrentShip));
     }
 }
 
@@ -116,8 +125,16 @@ abstract class WaitAction : Action
 class WaitMovingAction : WaitAction
 {
     public WaitMovingAction(List<Cell> availableArea) : base(availableArea) { }
-    public override Action Execute(PlayerController shipController)//, params object[] objects)
+    public override Action Execute(PlayerController playerController)
     {
+        Debug.Log(playerController + "on WaitMovingAction");
+        if (Input.GetKeyDown(KeyCode.Space) == true)
+            return new InitShootingAction();
+        if (Input.GetKeyDown(KeyCode.Tab) == true)
+        {
+            playerController.NextShip();
+            return new InitMovingAction();
+        }
         return this;
     }
 }
@@ -125,8 +142,16 @@ class WaitMovingAction : WaitAction
 class WaitShootingAction : WaitAction
 {
     public WaitShootingAction(List<Cell> availableArea) : base(availableArea) { }
-    public override Action Execute(PlayerController shipController)//, params object[] objects)
+    public override Action Execute(PlayerController playerController)
     {
+        Debug.Log(playerController + "on WaitShootingAction");
+        if (Input.GetKeyDown(KeyCode.Space) == true)
+            return new InitMovingAction();
+        if (Input.GetKeyDown(KeyCode.Tab) == true)
+        {
+            playerController.NextShip();
+            return new InitMovingAction();
+        }
         return this;
     }
 }

@@ -30,7 +30,7 @@ class MapController : MonoBehaviour {
 
 	private MapController(Map map) {
 		this.map = map;
-		//residualLength = new double[map.Width, map.Height];
+        Awake();
 	}
 
 	public void Awake() {
@@ -53,8 +53,8 @@ class MapController : MonoBehaviour {
 	//}
 
 	public List<Cell> CalculateAvailableShootingArea(Ship ship) {
-		ship.CurrentCell.renderer.material = ShootToMaterial;
 		List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.DefaultStepLength);
+        area.Add(ship.CurrentCell);
 		foreach (var neighbourCell in area) {
 			neighbourCell.renderer.material = ShootToMaterial;
 		}
