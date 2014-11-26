@@ -30,6 +30,16 @@ class PlayerController: MonoBehaviour {
 
 	public event System.Action<PlayerController> stepFinished;
 
+    public Dictionary<Ship, ShipStatus> stepLimiter;
+
+    public void CleanStepLimiter()
+    { 
+        foreach(var ship in ships)
+        {
+            stepLimiter[ship] = ShipStatus.NoAction;
+        }
+    }
+
 	public PlayerController(Ship currentShip, MapController mapController)
 	{
 		CurrentShip = currentShip;
@@ -40,14 +50,18 @@ class PlayerController: MonoBehaviour {
 	public void Awake()
 	{
 		IEnumerable<GameObject> shipGOs  = GameObject.FindGameObjectsWithTag(Tags.Ship);
+        stepLimiter = new Dictionary<Ship, ShipStatus>();
 		foreach(var shipGO in shipGOs)
 		{
 			Ship ship = shipGO.GetComponent<Ship>();
 			ship.CurrentCell.IsFree = false;
-			if (ships.Contains(ship))
-				ship.TryingToSelect += OnShipSelecting;
-			else
-				ship.TryingToSelect += OnAttack;
+            if (ships.Contains(ship))
+            {
+                ship.TryingToSelect += OnShipSelecting;
+                stepLimiter.Add(ship, ShipStatus.NoAction);
+            }
+            else
+                ship.TryingToSelect += OnAttack;
 		}
 		foreach(Cell cell in MapController.Map)
 		{
@@ -90,15 +104,23 @@ class PlayerController: MonoBehaviour {
 		ships.Remove(ship);
 	}
 
-    public void NextShip()
+    public bool NextAvailableShip()
     {
         int index = ships.IndexOf(CurrentShip);
-        CurrentShip = ships[index < ships.Count - 1 ? index + 1 : 0];
+        for (int i = (index + 1) % ships.Count; i != index  ; i = (i + 1) % ships.Count)
+            if (stepLimiter[ships[i]] != ShipStatus.MovedAndShooted)
+            {
+                CurrentShip = ships[i];
+                return true;
+            }
+        return false;
     }
 
-	public Action currentAction;
+	private Action currentAction;
 	public void  Tick()
 	{
         currentAction = currentAction.Execute(this);
 	}
 }
+
+public enum ShipStatus { NoAction, Moved, Shooted, MovedAndShooted }

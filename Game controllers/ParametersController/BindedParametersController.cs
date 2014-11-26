@@ -10,7 +10,7 @@ class BindedParametersController : ParametersController {
     private void _targetController_HPChanged(ParametersController parametersController)
     {
         slider.sliderValue = parametersController._parameters.HitPoints / _parameters.HitPoints;
-        slider.ForceUpdate();
+        //slider.ForceUpdate();
     }
 	public BindedParametersController(ParametersController paramController) {
 		this._targetController = paramController;

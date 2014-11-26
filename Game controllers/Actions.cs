@@ -10,9 +10,30 @@ class FinishStepAction: Action
 {
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on FinishStepAction");
+        playerController.CleanStepLimiter();
         playerController.StepFinished = true;
         return new InitMovingAction();
+    }
+}
+
+class SolveActivityAction : Action
+{
+    public override Action Execute(PlayerController playerController)
+    {
+        switch (playerController.stepLimiter[playerController.CurrentShip])
+        { 
+            case ShipStatus.NoAction:
+                return new InitMovingAction();
+            case ShipStatus.Moved:
+                return new InitShootingAction();
+            case ShipStatus.Shooted:
+                return new InitMovingAction();
+            default:
+                if (playerController.NextAvailableShip())
+                    return new SolveActivityAction();
+                else
+                    return new FinishStepAction();  
+        }
     }
 }
 
@@ -29,12 +50,22 @@ class ShootAction : Action
 
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on ShootAction");
         Parameters damage = _damageController.CalculateDamage(playerController.CurrentShip, defenser);
         float oldHitPoints = defenser.Current.Parameters.HitPoints;
         defenser.Current.Parameters -= damage;
         //defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HitPoints);
-        return new FinishStepAction();
+        switch (playerController.stepLimiter[playerController.CurrentShip])
+        {
+            case ShipStatus.NoAction:
+                playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.Shooted;
+                break;
+            case ShipStatus.Moved:
+                playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.MovedAndShooted;
+                break;
+            default:
+                throw new System.InvalidOperationException();
+        }
+        return new SolveActivityAction();
     }
 }
 
@@ -47,10 +78,8 @@ class MoveAction : Action
         MoveToHex = moveToHex;
     }
 
-    public override Action Execute(PlayerController playerController)//, Cell cell)
+    public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on MoveAction");
-
         //if (!cell.IsAvailableRouteCell)
         //	throw new System.ArgumentOutOfRangeException();
         Ship ship = playerController.CurrentShip;
@@ -62,7 +91,18 @@ class MoveAction : Action
         {
             ship.transform.position = moveTo;
             ship.CurrentCell = MoveToHex;
-            return new InitShootingAction();
+            switch(playerController.stepLimiter[playerController.CurrentShip])
+            {
+                case ShipStatus.NoAction:
+                    playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.Moved;
+                    break;
+                case ShipStatus.Shooted:
+                    playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.MovedAndShooted;
+                    break;
+                default:
+                    throw new System.InvalidOperationException();
+            }
+            return new SolveActivityAction();
         }
         else
         {
@@ -79,7 +119,6 @@ class InitMovingAction : Action
 {
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on InitMovingAction");
         WaitAction.CleanAvailableArea();
         playerController.StepFinished = false;
         return new WaitMovingAction(playerController.MapController.CalculateAvailableMovingArea(playerController.CurrentShip));
@@ -90,7 +129,6 @@ class InitShootingAction : Action
 {
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on InitShootingAction");
         WaitAction.CleanAvailableArea();
         return new WaitShootingAction(playerController.MapController.CalculateAvailableShootingArea(playerController.CurrentShip));
     }
@@ -127,14 +165,15 @@ class WaitMovingAction : WaitAction
     public WaitMovingAction(List<Cell> availableArea) : base(availableArea) { }
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on WaitMovingAction");
-        if (Input.GetKeyDown(KeyCode.Space) == true)
+        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentShip] != ShipStatus.Shooted)
             return new InitShootingAction();
         if (Input.GetKeyDown(KeyCode.Tab) == true)
         {
-            playerController.NextShip();
-            return new InitMovingAction();
+            playerController.NextAvailableShip();
+            return new SolveActivityAction();
         }
+        if (Input.GetKeyDown(KeyCode.Return) == true)
+            return new FinishStepAction();
         return this;
     }
 }
@@ -144,14 +183,15 @@ class WaitShootingAction : WaitAction
     public WaitShootingAction(List<Cell> availableArea) : base(availableArea) { }
     public override Action Execute(PlayerController playerController)
     {
-        Debug.Log(playerController + "on WaitShootingAction");
-        if (Input.GetKeyDown(KeyCode.Space) == true)
+        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentShip] != ShipStatus.Moved)
             return new InitMovingAction();
         if (Input.GetKeyDown(KeyCode.Tab) == true)
         {
-            playerController.NextShip();
-            return new InitMovingAction();
+            playerController.NextAvailableShip();
+            return new SolveActivityAction();
         }
+        if (Input.GetKeyDown(KeyCode.Return) == true)
+            return new FinishStepAction();
         return this;
     }
 }
