@@ -3,19 +3,18 @@ using System.Collections.Generic;
 
 [System.Serializable]
 class PlayerController: MonoBehaviour {
-	public List<Ship> ships;
+	public List<FightingUnit> FightingUnits;
 	[SerializeField]
-	private Ship currentShip;
+	private FightingUnit currentFightingUnit;
 
 	public MapController MapController;
 
-	public Ship CurrentShip
+	public FightingUnit CurrentFightingUnit
 	{
-		get { return currentShip; }
+		get { return currentFightingUnit; }
 		set 
 		{
-			currentShip = value;
-			//currentAction = new InitMovingAction();
+			currentFightingUnit = value;
 		}
 	}
 
@@ -30,59 +29,71 @@ class PlayerController: MonoBehaviour {
 
 	public event System.Action<PlayerController> stepFinished;
 
-    public Dictionary<Ship, ShipStatus> stepLimiter;
+    public Dictionary<FightingUnit, Status> stepLimiter;
 
     public void CleanStepLimiter()
     { 
-        foreach(var ship in ships)
+        foreach(var fightingUnit in FightingUnits)
         {
-            stepLimiter[ship] = ShipStatus.NoAction;
+            stepLimiter[fightingUnit] = Status.NoAction;
         }
     }
 
-	public PlayerController(Ship currentShip, MapController mapController)
+	public PlayerController(FightingUnit currentFightingUnit, MapController mapController)
 	{
-		CurrentShip = currentShip;
+		CurrentFightingUnit = currentFightingUnit;
 		MapController = mapController;
 		Awake();
 	}
 
 	public void Awake()
 	{
-		IEnumerable<GameObject> shipGOs  = GameObject.FindGameObjectsWithTag(Tags.Ship);
-        stepLimiter = new Dictionary<Ship, ShipStatus>();
-		foreach(var shipGO in shipGOs)
-		{
-			Ship ship = shipGO.GetComponent<Ship>();
-			ship.CurrentCell.IsFree = false;
-            if (ships.Contains(ship))
-            {
-                ship.TryingToSelect += OnShipSelecting;
-                stepLimiter.Add(ship, ShipStatus.NoAction);
-            }
-            else
+		GameObject[] shipGOs  = GameObject.FindGameObjectsWithTag(Tags.Ship);
+        GameObject[] fortGOs = GameObject.FindGameObjectsWithTag(Tags.Fort);
+        stepLimiter = new Dictionary<FightingUnit, Status>();
+        foreach (FightingUnit fightingUnit in FightingUnits)
+        {
+            fightingUnit.CurrentCell.IsFree = false;
+            fightingUnit.TryingToSelect += OnFightingUnitSelecting;
+            fightingUnit.Destroying += OnFightingUnitDestroying;
+            stepLimiter.Add(fightingUnit, Status.NoAction);
+        }
+        foreach (var shipGO in shipGOs)
+        {
+            Ship ship = shipGO.GetComponent<Ship>();
+            if (!FightingUnits.Contains(ship))
                 ship.TryingToSelect += OnAttack;
-		}
+        }
+        foreach (var fortGO in fortGOs)
+        {
+            Fort fort = fortGO.GetComponent<Fort>();
+            if(!FightingUnits.Contains(fort))
+                fort.TryingToSelect += OnAttack;
+        }
 		foreach(Cell cell in MapController.Map)
 		{
 			cell.TryingToSelect += OnCellSelecting;
 		}
-		currentAction = new InitMovingAction();
+		currentAction = new SolveActivityAction();
 	}
 
-	private void OnShipSelecting(Ship ship)
+    private void OnFightingUnitDestroying(FightingUnit fightingUnit)
+    {
+        FightingUnits.Remove(fightingUnit);
+    }
+
+	private void OnFightingUnitSelecting(FightingUnit unit)
 	{
 		if (!(currentAction is MoveAction || currentAction is ShootAction))
-		{
-			CurrentShip = ship;
-			//stepFinished(this);
-		}
+			CurrentFightingUnit = unit;
 	}
 
-	private void OnAttack(Ship ship)
+	private void OnAttack(FightingUnit unit)
 	{
-        if (currentAction is WaitShootingAction && WaitAction.isAvalableAreaContainsCell(ship.CurrentCell))
-            currentAction = new ShootAction(new DamageController(), ship);
+        if (currentAction is WaitShootingAction && WaitAction.isAvalableAreaContainsCell(unit.CurrentCell))
+        {
+            currentAction = new ShootAction(new DamageController(), unit);
+        }
 	}
 
 	private void OnCellSelecting(Cell cell)
@@ -95,22 +106,22 @@ class PlayerController: MonoBehaviour {
 	}
 
 	public void AddShip(Ship ship, Cell cell) {
-        ships.Add(ship);
+        FightingUnits.Add(ship);
 		ship.CurrentCell.IsFree = false;
 	}
 
 	public void SubShip(Ship ship) {
 		ship.CurrentCell.IsFree = true;
-		ships.Remove(ship);
+		FightingUnits.Remove(ship);
 	}
 
     public bool NextAvailableShip()
     {
-        int index = ships.IndexOf(CurrentShip);
-        for (int i = (index + 1) % ships.Count; i != index  ; i = (i + 1) % ships.Count)
-            if (stepLimiter[ships[i]] != ShipStatus.MovedAndShooted)
+        int index = FightingUnits.IndexOf(CurrentFightingUnit);
+        for (int i = (index + 1) % FightingUnits.Count; i != index  ; i = (i + 1) % FightingUnits.Count)
+            if (stepLimiter[FightingUnits[i]] != Status.HasDoneAllPosible)
             {
-                CurrentShip = ships[i];
+                CurrentFightingUnit = FightingUnits[i];
                 return true;
             }
         return false;
@@ -123,4 +134,4 @@ class PlayerController: MonoBehaviour {
 	}
 }
 
-public enum ShipStatus { NoAction, Moved, Shooted, MovedAndShooted }
+public enum Status { NoAction, Moved, Shooted, HasDoneAllPosible }

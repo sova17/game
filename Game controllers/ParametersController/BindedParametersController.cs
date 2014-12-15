@@ -1,9 +1,8 @@
 [System.Serializable]
 class BindedParametersController : ParametersController {
 	public ParametersController _targetController;
-    public UISlider slider;
 
-    public void Awake()
+    /*public void Awake()
     { 
         _targetController.HPChanged +=_targetController_HPChanged;
     }
@@ -11,7 +10,7 @@ class BindedParametersController : ParametersController {
     {
         slider.sliderValue = parametersController._parameters.HitPoints / _parameters.HitPoints;
         //slider.ForceUpdate();
-    }
+    }*/
 	public BindedParametersController(ParametersController paramController) {
 		this._targetController = paramController;
 	}
@@ -42,15 +41,10 @@ class BindedParametersController : ParametersController {
 		base.AddMoral(addition);
 		_targetController.AddMoral(addition);
 	}
-	public override void AddNumberOfLarboardCannons(int addition) {
-		base.AddNumberOfLarboardCannons(addition);
-		_targetController.AddNumberOfLarboardCannons(addition);
+	public override void AddNumberOfCannons(int addition) {
+		base.AddNumberOfCannons(addition);
+		_targetController.AddNumberOfCannons(addition);
 	}
-    public override void AddNumberOfSarboardCannons(int addition)
-    {
-        base.AddNumberOfSarboardCannons(addition);
-        _targetController.AddNumberOfSarboardCannons(addition);
-    }
 	/*public override void AddObservation(int addition) {
 		base.AddObservation(addition);
 		_targetController.AddObservation(addition);
@@ -60,11 +54,11 @@ class BindedParametersController : ParametersController {
 		base.AddSharpshooting(addition);
 		_targetController.AddSharpshooting(addition);
 	}
-	public override void AddSpeed(float addition) {
+	/*public override void AddSpeed(float addition) {
 		base.AddSpeed(addition);
 		_targetController.AddSpeed(addition);
 	}
-	/*public override void AddSubtlety(int addition) {
+	public override void AddSubtlety(int addition) {
 		base.AddSubtlety(addition);
 		_targetController.AddSubtlety(addition);
 	}

@@ -12,7 +12,7 @@ class FinishStepAction: Action
     {
         playerController.CleanStepLimiter();
         playerController.StepFinished = true;
-        return new InitMovingAction();
+        return new SolveActivityAction();
     }
 }
 
@@ -20,19 +20,35 @@ class SolveActivityAction : Action
 {
     public override Action Execute(PlayerController playerController)
     {
-        switch (playerController.stepLimiter[playerController.CurrentShip])
-        { 
-            case ShipStatus.NoAction:
-                return new InitMovingAction();
-            case ShipStatus.Moved:
-                return new InitShootingAction();
-            case ShipStatus.Shooted:
-                return new InitMovingAction();
-            default:
-                if (playerController.NextAvailableShip())
-                    return new SolveActivityAction();
-                else
-                    return new FinishStepAction();  
+        if (playerController.CurrentFightingUnit is Ship)
+        {
+            switch (playerController.stepLimiter[playerController.CurrentFightingUnit])
+            {
+                case Status.NoAction:
+                    return new InitMovingAction();
+                case Status.Moved:
+                    return new InitShootingAction();
+                case Status.Shooted:
+                    return new InitMovingAction();
+                default:
+                    if (playerController.NextAvailableShip())
+                        return new SolveActivityAction();
+                    else
+                        return new FinishStepAction();
+            }
+        }
+        else //if (playerController.CurrentFightingUnit is Fort)
+        {
+            switch (playerController.stepLimiter[playerController.CurrentFightingUnit])
+            {
+                case Status.NoAction:
+                    return new InitShootingAction();
+                default:
+                    if (playerController.NextAvailableShip())
+                        return new SolveActivityAction();
+                    else
+                        return new FinishStepAction();
+            }
         }
     }
 }
@@ -40,9 +56,9 @@ class SolveActivityAction : Action
 class ShootAction : Action
 {
     BaseDamageController _damageController;
-    Ship defenser;
+    FightingUnit defenser;
 
-    public ShootAction(BaseDamageController damageController, Ship defenser)
+    public ShootAction(BaseDamageController damageController, FightingUnit defenser)
     {
         this._damageController = damageController;
         this.defenser = defenser;
@@ -50,17 +66,21 @@ class ShootAction : Action
 
     public override Action Execute(PlayerController playerController)
     {
-        Parameters damage = _damageController.CalculateDamage(playerController.CurrentShip, defenser);
+        FightingUnitParameters damage = _damageController.CalculateDamage(playerController.CurrentFightingUnit, defenser);
         float oldHitPoints = defenser.Current.Parameters.HitPoints;
-        defenser.Current.Parameters -= damage;
+        //defenser.Current.Parameters -= damage;
+        defenser.Current.AddHitPoints(damage.HitPoints);
         //defenser.Storage.OnDamage(oldHitPoints, defenser.Current.Parameters.HitPoints);
-        switch (playerController.stepLimiter[playerController.CurrentShip])
+        switch (playerController.stepLimiter[playerController.CurrentFightingUnit])
         {
-            case ShipStatus.NoAction:
-                playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.Shooted;
+            case Status.NoAction:
+                if (playerController.CurrentFightingUnit is Ship)
+                    playerController.stepLimiter[playerController.CurrentFightingUnit] = Status.Shooted;
+                else //if (playerController.CurrentFightingUnit is Fort)
+                    playerController.stepLimiter[playerController.CurrentFightingUnit] = Status.HasDoneAllPosible;
                 break;
-            case ShipStatus.Moved:
-                playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.MovedAndShooted;
+            case Status.Moved:
+                playerController.stepLimiter[playerController.CurrentFightingUnit] = Status.HasDoneAllPosible;
                 break;
             default:
                 throw new System.InvalidOperationException();
@@ -82,7 +102,9 @@ class MoveAction : Action
     {
         //if (!cell.IsAvailableRouteCell)
         //	throw new System.ArgumentOutOfRangeException();
-        Ship ship = playerController.CurrentShip;
+        if (!(playerController.CurrentFightingUnit is Ship))
+            throw new System.Exception();
+        Ship ship = playerController.CurrentFightingUnit as Ship;
 
         GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.LookAt(ship.transform.position);
         Vector3 moveTo = new Vector3(MoveToHex.transform.position.x, ship.transform.position.y, MoveToHex.transform.position.z);
@@ -91,13 +113,13 @@ class MoveAction : Action
         {
             ship.transform.position = moveTo;
             ship.CurrentCell = MoveToHex;
-            switch(playerController.stepLimiter[playerController.CurrentShip])
+            switch(playerController.stepLimiter[playerController.CurrentFightingUnit])
             {
-                case ShipStatus.NoAction:
-                    playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.Moved;
+                case Status.NoAction:
+                    playerController.stepLimiter[playerController.CurrentFightingUnit] = Status.Moved;
                     break;
-                case ShipStatus.Shooted:
-                    playerController.stepLimiter[playerController.CurrentShip] = ShipStatus.MovedAndShooted;
+                case Status.Shooted:
+                    playerController.stepLimiter[playerController.CurrentFightingUnit] = Status.HasDoneAllPosible;
                     break;
                 default:
                     throw new System.InvalidOperationException();
@@ -106,7 +128,7 @@ class MoveAction : Action
         }
         else
         {
-            ship.transform.position = Vector3.Lerp(ship.transform.position, moveTo, ship.Current.Parameters.Speed * Time.deltaTime);
+            ship.transform.position = Vector3.Lerp(ship.transform.position, moveTo, (ship.Current.Parameters as ShipParameters).Speed * Time.deltaTime);
             return this;
         }
         /*shipController.SubShip(ship);
@@ -121,7 +143,7 @@ class InitMovingAction : Action
     {
         WaitAction.CleanAvailableArea();
         playerController.StepFinished = false;
-        return new WaitMovingAction(playerController.MapController.CalculateAvailableMovingArea(playerController.CurrentShip));
+        return new WaitMovingAction(playerController.MapController.CalculateAvailableMovingArea(playerController.CurrentFightingUnit as Ship));
     }
 }
 
@@ -130,7 +152,7 @@ class InitShootingAction : Action
     public override Action Execute(PlayerController playerController)
     {
         WaitAction.CleanAvailableArea();
-        return new WaitShootingAction(playerController.MapController.CalculateAvailableShootingArea(playerController.CurrentShip));
+        return new WaitShootingAction(playerController.MapController.CalculateAvailableShootingArea(playerController.CurrentFightingUnit));
     }
 }
 
@@ -165,7 +187,7 @@ class WaitMovingAction : WaitAction
     public WaitMovingAction(List<Cell> availableArea) : base(availableArea) { }
     public override Action Execute(PlayerController playerController)
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentShip] != ShipStatus.Shooted)
+        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentFightingUnit] != Status.Shooted)
             return new InitShootingAction();
         if (Input.GetKeyDown(KeyCode.Tab) == true)
         {
@@ -183,7 +205,7 @@ class WaitShootingAction : WaitAction
     public WaitShootingAction(List<Cell> availableArea) : base(availableArea) { }
     public override Action Execute(PlayerController playerController)
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentShip] != ShipStatus.Moved)
+        if (Input.GetKeyDown(KeyCode.Space) == true && playerController.stepLimiter[playerController.CurrentFightingUnit] != Status.Moved)
             return new InitMovingAction();
         if (Input.GetKeyDown(KeyCode.Tab) == true)
         {

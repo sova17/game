@@ -52,9 +52,9 @@ class MapController : MonoBehaviour {
 	//	return area;
 	//}
 
-	public List<Cell> CalculateAvailableShootingArea(Ship ship) {
-		List<Cell> area = Map.GetNeighbours(ship.CurrentCell, ship.Current.Parameters.DefaultStepLength);
-        area.Add(ship.CurrentCell);
+	public List<Cell> CalculateAvailableShootingArea(FightingUnit unit) {
+		List<Cell> area = Map.GetNeighbours(unit.CurrentCell, unit.Current.Parameters.ShootingRange);
+        area.Add(unit.CurrentCell);
 		foreach (var neighbourCell in area) {
 			neighbourCell.renderer.material = ShootToMaterial;
 		}
@@ -74,7 +74,7 @@ class MapController : MonoBehaviour {
 		//	}
 		int x = ship.CurrentCell.X;
 		int z = ship.CurrentCell.Z;
-		residualLength[x, z] = ship.Current.Parameters.Speed * roundTime;
+		residualLength[x, z] = (ship.Current.Parameters as ShipParameters).Speed * roundTime;
 		List<Cell> result = new List<Cell>();
 		result.Add(ship.CurrentCell);
 		while (x >= 0) {

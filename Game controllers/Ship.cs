@@ -3,69 +3,27 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-class Ship : MonoBehaviour//, IComparable<Ship>
+class Ship : FightingUnit//, IComparable<Ship>
 {
     #region private fields
         [SerializeField]
-        private string _name;
-        [SerializeField]
         private ShipClass _className;
-        [SerializeField]
-        private int _creationYear;
-        [SerializeField]
-        private Nation _creationNation;
-        [SerializeField]
-        private Nation _palyingNation;
         [SerializeField]
         private int _width;
         [SerializeField]
         private int _length;
         [SerializeField]
-        private Storage _storage;
-        [SerializeField]
-        private BindedParametersController _base;
-        [SerializeField]
-        private BalancingParametersController _current;
-        [SerializeField]
-        private Cell _currentCell;
-        [SerializeField]
-        private int _level;
-        [SerializeField]
-        private int _experience;
-        [SerializeField]
         private int _requiredCommandLevel;
         [SerializeField]
-        private Cannon _cannonKind;
-        [SerializeField]
-        private CannonBall _cannonBallKind;
+        private IEnumerable<ShipPart> _shipParts;
     #endregion
 
     #region properies
-        public string Name
-	    {
-		    get { return _name; }
-		    protected set { _name = value; }
-	    }
 	    public ShipClass ClassName
 	    {
 		    get { return _className; }
 		    protected set { _className = value; }
 	    }
-	    public int CreationYear
-	    {
-		    get { return _creationYear; }
-		    protected set { _creationYear = value; }
-	    }
-	    public Nation CreationNation
-	    {
-		    get { return _creationNation; }
-		    protected set { _creationNation = value; }
-	    }
-        public Nation PlayingNation
-        {
-            get { return _palyingNation; }
-            set { _palyingNation = value; }
-        }
 	    public int Width
 	    {
 		    get { return _width; }
@@ -76,105 +34,36 @@ class Ship : MonoBehaviour//, IComparable<Ship>
 		    get { return _length; }
 		    protected set { _length = value; }
 	    }
-	    public Storage Storage
-	    {
-		    get { return _storage; }
-		    protected set { _storage = value; }
-	    }
-	    public BindedParametersController Base
-	    {
-		    get { return _base; }
-		    protected set { _base = value; }
-	    }
-	    public BalancingParametersController Current
-	    {
-		    get { return _current; }
-		    protected set { _current = value; }
-	    }
-        public int Level
-        {
-            get { return _level; }
-            set { _level = value; }
-        }
-        public int Experience
-        {
-            get { return _experience; }
-            set { _experience = value; }
-        }
         public int RequiredCommandLevel
         {
             get { return _requiredCommandLevel; }
             set { _requiredCommandLevel = value; }
         }
-        public Cannon CannonKind
+        public IEnumerable<ShipPart> ShipParts
         {
-            get { return _cannonKind; }
-            set { _cannonKind = value; }
-        }
-        public CannonBall CannonBallKind
-        {
-            get { return _cannonBallKind; }
-            set { _cannonBallKind = value; }
-        }
-        public Cell CurrentCell
-        {
-            get { return _currentCell;  }
-            set 
-            {
-                _currentCell.IsFree = true;
-                _currentCell = value;
-                _currentCell.IsFree = false;
-            }
+            get { return _shipParts; }
+            set { _shipParts = value; }
         }
     #endregion
 
     public Ship(string name, ShipClass className, int creationYear,
-	            Nation creationNation, Nation playingNation, int level,
-	            int experience, int requiredCommandLevel, int width, 
-	            int length, Storage storage, BindedParametersController _base,
-	            BalancingParametersController current, Cannon cannonKind,
-	            CannonBall cannonBallKind, Cell currentCell)
-	{
-		Name = name;
-		ClassName = className;
-		CreationYear = creationYear;
-		CreationNation = creationNation;
-		PlayingNation = playingNation;
-		Level = level;
-		Experience = experience;
-		RequiredCommandLevel = requiredCommandLevel;
-		Width = width;
-		Length = length;
-		Storage = storage;
-		Base = _base;
-		Current = current;
-		CannonKind = cannonKind;
-		CannonBallKind = cannonBallKind;
-		CurrentCell = currentCell;
-	}
-
-	public IEnumerable<CannonBall> CannonBalls() {
-		return (IEnumerable<CannonBall>)Storage.GetObjectsByType<CannonBall>();
-	}
-
-	public IEnumerable<Cannon> Cannons() {
-		return (IEnumerable<Cannon>)Storage.GetObjectsByType<Cannon>();
-	}
-
-	/*int IComparable<Ship>.CompareTo(Ship second) {
-		if (Current.Parameters.Initiative > second.Current.Parameters.Initiative)
-			return 1;
-		if (Current.Parameters.Initiative < second.Current.Parameters.Initiative)
-			return -1;
-		System.Random rnd = new System.Random();
-		return (rnd.NextDouble() > 0.5) ? 1 : -1;
-	}*/
+                Nation creationNation, Nation playingNation, int level,
+                int experience, int requiredCommandLevel, int width,
+                int length, Storage storage, BindedParametersController _base,
+                BalancingParametersController current, CannonKind cannonKind,
+                CannonBallKind cannonBallKind, Cell currentCell):                   base(name, creationYear, creationNation,
+                                                                                    playingNation, level, experience, storage,
+                                                                                    _base, current, cannonKind, cannonBallKind,
+                                                                                    currentCell)
+    {
+        ClassName = className;
+        RequiredCommandLevel = requiredCommandLevel;
+        Width = width;
+        Length = length;
+    }
 
 	public override int GetHashCode() {
-		return this.ClassName.GetHashCode() 
-			^ Name.GetHashCode() 
-			^ Enum.GetName(typeof(Nation), CreationNation).GetHashCode() 
-			^ CreationYear;
+        return this.ClassName.GetHashCode() ^ base.GetHashCode();
 	}
 
 	public override bool Equals(object obj) {
@@ -184,10 +73,7 @@ class Ship : MonoBehaviour//, IComparable<Ship>
 	}
 
 	public bool Equals(Ship ship) {
-		return this.Name == ship.Name &&
-            this.ClassName == ship.ClassName &&
-            this.CreationYear == ship.CreationYear &&
-            this.CreationNation == ship.CreationNation;
+        return this.ClassName == ship.ClassName && base.Equals(ship);
 	}
 
 	public static bool operator ==(Ship first, Ship second) {
@@ -197,15 +83,6 @@ class Ship : MonoBehaviour//, IComparable<Ship>
 	public static bool operator !=(Ship first, Ship second) {
 		return !(first == second);
 	}
-
-    public event Action<Ship> TryingToSelect;
-
-    public void OnMouseDown()
-    {
-        Base.Parameters.HitPoints += 5;
-        if (TryingToSelect != null)
-            TryingToSelect(this);
-    }
 }
 
 public enum ShipClass 
@@ -217,13 +94,4 @@ public enum ShipClass
 	Trader,
 	Sloop,
 	FishingBoat
-}
-
-public enum Nation 
-{
-	England,
-	Spain,
-	Portugal,
-	France,
-	Brothers
 }

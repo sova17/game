@@ -14,7 +14,7 @@ abstract class BaseStorage: MonoBehaviour {
 	/// <summary>
 	/// return 0 when storage doesn't contains <paramref name="obj"/>
 	/// </summary>
-	public abstract int CountOfObjectInStorage(IStorable obj);
+	public abstract int CountOfObjectsInStorage(IStorable obj);
 	public abstract bool TryAddObject(IStorable obj);
 	public abstract bool TrySubObject(IStorable obj);
 	public abstract void OnDamage(float oldHitPoints, float newHitPoints);
@@ -68,7 +68,7 @@ class Storage : BaseStorage {
 		return _collection.Keys.Contains(obj);
 	}
 
-	public override int CountOfObjectInStorage(IStorable obj) {
+	public override int CountOfObjectsInStorage(IStorable obj) {
 		if (!this.Contains(obj)) {
 			return 0;
 		}

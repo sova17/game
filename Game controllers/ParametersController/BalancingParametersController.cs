@@ -1,27 +1,27 @@
 [System.Serializable]
 class BalancingParametersController : ParametersController {
 
-	public BalancingParametersController (Parameters parameters): base(parameters) {}
+	public BalancingParametersController (FightingUnitParameters parameters): base(parameters) {}
 
-	private void UpdateParameters(Parameters oldParameters) {
+	private void UpdateParameters(FightingUnitParameters oldParameters) {
 		//throw new System.NotImplementedException();
 		///////////// TO DO /////////////
 	}
 
     public override void AddArmour(float addition)
     {
-		Parameters oldParameters = _parameters;
+		FightingUnitParameters oldParameters = _parameters;
 		base.AddArmour(addition);
 		UpdateParameters(oldParameters);
 	}
-	/*public override void AddDraft(int addition) {
-		Parameters oldParameters = _parameters;
-		base.AddDraft(addition);
-		UpdateParameters(oldParameters);
-	}*/
+    /*public override void AddDraft(int addition) {
+        FightingUnitParameters oldParameters = _parameters;
+        base.AddDraft(addition);
+        UpdateParameters(oldParameters);
+    }*/
     public override void AddHitPoints(float addition)
     {
-		Parameters oldParameters = _parameters;
+        FightingUnitParameters oldParameters = _parameters;
 		base.AddHitPoints(addition);
 		UpdateParameters(oldParameters);
 	}
@@ -32,27 +32,21 @@ class BalancingParametersController : ParametersController {
 	}*/
     public override void AddLuck(float addition)
     {
-		Parameters oldParameters = _parameters;
+        FightingUnitParameters oldParameters = _parameters;
 		base.AddLuck(addition);
 		UpdateParameters(oldParameters);
 	}
     public override void AddMoral(float addition)
     {
-		Parameters oldParameters = _parameters;
+        FightingUnitParameters oldParameters = _parameters;
 		base.AddMoral(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddNumberOfLarboardCannons(int addition) {
-		Parameters oldParameters = _parameters;
-		base.AddNumberOfLarboardCannons(addition);
+	public override void AddNumberOfCannons(int addition) {
+        FightingUnitParameters oldParameters = _parameters;
+		base.AddNumberOfCannons(addition);
 		UpdateParameters(oldParameters);
 	}
-    public override void AddNumberOfSarboardCannons(int addition)
-    {
-        Parameters oldParameters = _parameters;
-        base.AddNumberOfSarboardCannons(addition);
-        UpdateParameters(oldParameters);
-    }
 	/*public override void AddObservation(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddObservation(addition);
@@ -60,16 +54,16 @@ class BalancingParametersController : ParametersController {
 	}*/
     public override void AddSharpshooting(float addition)
     {
-		Parameters oldParameters = _parameters;
+        FightingUnitParameters oldParameters = _parameters;
 		base.AddSharpshooting(addition);
 		UpdateParameters(oldParameters);
 	}
-	public override void AddSpeed(float addition) {
-		Parameters oldParameters = _parameters;
+	/*public override void AddSpeed(float addition) {
+        FightingUnitParameters oldParameters = _parameters;
 		base.AddSpeed(addition);
 		UpdateParameters(oldParameters);
 	}
-	/*public override void AddSubtlety(int addition) {
+	public override void AddSubtlety(int addition) {
 		Parameters oldParameters = _parameters;
 		base.AddSubtlety(addition);
 		UpdateParameters(oldParameters);

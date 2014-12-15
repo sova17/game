@@ -41,7 +41,7 @@ class CircularList<T>: IEnumerable<T>, ICollection<T>
 
     public void Clear()
     {
-        throw new System.NotImplementedException();
+        head.next = null;
     }
 
     public bool Contains(T item)
